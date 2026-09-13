@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { profile } from '../content'
 import { timeForAngle } from '../gaze-utils'
+import { createMobileGazePlayback } from '../mobile-gaze-playback'
 import RevealText from './RevealText'
 import './studio-footer.css'
 
@@ -24,6 +25,7 @@ export function GazeBackground({ className = 'studio-background', priority = fal
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
     const connection = navigator.connection
     let requestedSource = ''
+    let mobilePlayback = null
     // Keep an image visible until an actual decoded/playing frame is available.
     const showVideo = () => {
       video.dataset.frameReady = 'true'
@@ -70,6 +72,17 @@ export function GazeBackground({ className = 'studio-background', priority = fal
     const move = event => { pointer = { x: event.clientX, y: event.clientY }; updateTarget() }
     const ready = () => {
       if (disposed) return
+      if (mobile.matches) {
+        if (!mobilePlayback) {
+          requestedSource = ''
+          mobilePlayback = createMobileGazePlayback({ video, showVideo, showPoster })
+        }
+        mobilePlayback.setActive(visible && !document.hidden && !reducedMotion.matches)
+        if (reducedMotion.matches) showPoster()
+        return
+      }
+      mobilePlayback?.dispose()
+      mobilePlayback = null
       if (!visible || document.hidden) { video.pause(); return }
       if (reducedMotion.matches || connection?.saveData) {
         video.pause()
@@ -99,13 +112,14 @@ export function GazeBackground({ className = 'studio-background', priority = fal
         updateTarget(); schedule()
       }
     }
-    const observer = typeof IntersectionObserver === 'undefined' ? null : new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; ready() }, { rootMargin: '200px 0px', threshold: 0 })
+    const observer = typeof IntersectionObserver === 'undefined' ? null : new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; ready() }, { rootMargin: mobile.matches ? '0px' : '200px 0px', threshold: 0 })
     observer?.observe(containerRef.current)
     if (!observer) { visible = true; ready() }
     video.addEventListener('seeked', schedule)
     video.addEventListener('loadeddata', ready)
     video.addEventListener('canplay', ready)
-    video.addEventListener('playing', showVideo)
+    const desktopPlaying = () => { if (!mobile.matches) showVideo() }
+    video.addEventListener('playing', desktopPlaying)
     video.addEventListener('error', showPoster)
     mobile.addEventListener('change', ready)
     reducedMotion.addEventListener('change', ready)
@@ -119,11 +133,12 @@ export function GazeBackground({ className = 'studio-background', priority = fal
       disposed = true
       cancelAnimationFrame(frame)
       observer?.disconnect()
+      mobilePlayback?.dispose()
       video.pause()
       video.removeEventListener('seeked', schedule)
       video.removeEventListener('loadeddata', ready)
       video.removeEventListener('canplay', ready)
-      video.removeEventListener('playing', showVideo)
+      video.removeEventListener('playing', desktopPlaying)
       video.removeEventListener('error', showPoster)
       mobile.removeEventListener('change', ready)
       reducedMotion.removeEventListener('change', ready)
