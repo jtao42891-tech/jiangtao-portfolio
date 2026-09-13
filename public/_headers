@@ -6,6 +6,9 @@
 /media/mobile-previews/*
   Cache-Control: public, max-age=31536000, immutable
 
+/media/mobile-video/*
+  Cache-Control: public, max-age=31536000, immutable
+
 # These filenames can be replaced, so keep their browser cache bounded.
 /media/previews/*
   Cache-Control: public, max-age=3600

@@ -1,5 +1,6 @@
 import { memo, useEffect, useRef } from 'react'
 import { PROFILE_INTRO, sampleProfileIntro } from './profile-card-intro'
+import { observeProfileInteractions, PROFILE_TOUCH_QUERY } from './profile-card-interaction'
 import PreviewImage from './PreviewImage'
 import './ProfileCard.css'
 
@@ -18,6 +19,7 @@ function ProfileCard({ avatarUrl, name, className = '', enableTilt = true, behin
     if (!wrap || !shell) return
 
     const pointerQuery = window.matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)')
+    const touchQuery = window.matchMedia(PROFILE_TOUCH_QUERY)
     const motionQuery = window.matchMedia('(prefers-reduced-motion: no-preference)')
     const image = shell.querySelector('img')
     let imageReady = image.complete && image.naturalWidth > 0
@@ -151,36 +153,32 @@ function ProfileCard({ avatarUrl, name, className = '', enableTilt = true, behin
     const observer = new IntersectionObserver(entries => {
       const entry = entries[0]
       inView = entry.isIntersecting && entry.intersectionRatio >= 0.35
-      if (!entry.isIntersecting) reset()
+      // Let the phone's one automatic tour finish even if scrolling takes it
+      // offscreen; its final pose is already the static, centered portrait.
+      if (!entry.isIntersecting && !(touchQuery.matches && introStart !== null)) reset()
       else scheduleIntro()
     }, { threshold: [0, 0.35], rootMargin: '-70px 0px 0px' })
 
-    shell.addEventListener('pointerenter', move)
-    shell.addEventListener('pointermove', move)
-    shell.addEventListener('pointerleave', leave)
-    shell.addEventListener('pointercancel', reset)
+    const stopInteractions = observeProfileInteractions({
+      shell, touchQuery, windowTarget: window, move, leave, reset, scheduleIntro,
+    })
     pointerQuery.addEventListener('change', onMotionChange)
     motionQuery.addEventListener('change', onMotionChange)
     image.addEventListener('load', onImageLoad)
     window.addEventListener('blur', reset)
     window.addEventListener('focus', scheduleIntro)
-    window.addEventListener('resize', onMotionChange)
     document.addEventListener('visibilitychange', onVisibility)
     observer.observe(shell)
 
     return () => {
       reset()
       observer.disconnect()
-      shell.removeEventListener('pointerenter', move)
-      shell.removeEventListener('pointermove', move)
-      shell.removeEventListener('pointerleave', leave)
-      shell.removeEventListener('pointercancel', reset)
+      stopInteractions()
       pointerQuery.removeEventListener('change', onMotionChange)
       motionQuery.removeEventListener('change', onMotionChange)
       image.removeEventListener('load', onImageLoad)
       window.removeEventListener('blur', reset)
       window.removeEventListener('focus', scheduleIntro)
-      window.removeEventListener('resize', onMotionChange)
       document.removeEventListener('visibilitychange', onVisibility)
     }
   }, [enableTilt])

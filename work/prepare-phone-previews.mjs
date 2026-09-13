@@ -23,7 +23,7 @@ for (const [index, src] of inputs.entries()) {
   const input = path.join(root, src)
   const metadata = await sharp(input).metadata()
   const long = metadata.height / metadata.width > 5
-  const widths = [...new Set((long ? [240, 360] : [360, 540, 800, 1080]).map(width => Math.min(width, metadata.width)))]
+  const widths = [...new Set((long ? [240, 360] : [240, 360, 540, 800]).map(width => Math.min(width, metadata.width)))]
   const name = src.slice(1).replace(/\.[^.]+$/, '').replace(/[^a-z0-9-]/gi, '-')
   const variants = []
   for (const width of widths) {

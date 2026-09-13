@@ -2,7 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { stat } from 'node:fs/promises'
 import path from 'node:path'
-import { previewImageProps } from '../src/media-preview.js'
+import { mobilePreviewImageProps, previewImageProps } from '../src/media-preview.js'
 import desktop from '../src/media-previews.json' with { type: 'json' }
 import mobile from '../src/mobile-media-previews.json' with { type: 'json' }
 
@@ -39,4 +39,19 @@ test('GIFs use mobile animation copies only on phones', () => {
     assert.match(previewImageProps(src, undefined, true).src, /\.webp$/)
   }
   assert.deepEqual(previewImageProps('/not-in-manifest.png', undefined, true), { src: '/not-in-manifest.png' })
+})
+
+test('phones select one sharp 2x copy, not a larger 3x/4x or original file', () => {
+  const src = '/works/creative-square/01-ultra-basketball.jpg'
+  const small = mobilePreviewImageProps(src, 118, 3)
+  assert.match(small.src, /-240-[a-f0-9]+\.webp$/)
+  assert.equal(small.srcSet, undefined)
+  assert.deepEqual(small, mobilePreviewImageProps(src, 118, 4))
+  assert.match(mobilePreviewImageProps(src, 180, 3).src, /-360-/)
+  assert.match(mobilePreviewImageProps('/media/jiangtao-portrait.jpg', 366, 3).src, /-800-/)
+  for (const src of Object.keys(mobile)) {
+    const preview = mobilePreviewImageProps(src, 366, 4)
+    assert.match(preview.src, /^\/media\/mobile-previews\//)
+    assert.equal(preview.srcSet, undefined)
+  }
 })

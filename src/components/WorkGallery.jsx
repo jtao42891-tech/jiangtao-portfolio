@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react'
 import { gallerySections, sectionItems } from '../gallery-data'
-import { videoPoster } from '../media-preview'
+import { mobilePreviewImageProps, videoPlaybackSource, videoPoster } from '../media-preview'
 import { isMobilePreviewDevice } from '../preview-loading'
 import PreviewImage from './PreviewImage'
 import useDragScroll from '../useDragScroll'
@@ -142,6 +142,10 @@ function MediaViewer({ viewer, onClose }) {
   const [failed, setFailed] = useState(false)
   const playerRef = useRef(null)
   const item = viewer.items[index]
+  const mobile = isMobilePreviewDevice()
+  const playbackSrc = videoPlaybackSource(item.src, mobile)
+  const poster = videoPoster(item)
+  const playbackPoster = mobile && poster ? mobilePreviewImageProps(poster, window.innerWidth, window.devicePixelRatio).src : poster
   const change = delta => { setIndex(current => Math.max(0, Math.min(viewer.items.length - 1, current + delta))); setFailed(false) }
   useEffect(() => {
     const player = playerRef.current
@@ -168,7 +172,7 @@ function MediaViewer({ viewer, onClose }) {
   return <Dialog className="media-lightbox" labelId="media-viewer-title" onClose={onClose} onKeyDown={onKeyDown} showClose={false} animated>{({ requestClose }) => <>
     <div className="viewer-header"><h2 id="media-viewer-title" title={item.title} aria-live="polite">{item.title}</h2><button className="viewer-close" onClick={requestClose} aria-label="关闭大图预览" autoFocus>关闭 <span aria-hidden="true">×</span></button></div>
     {item.src && !failed && item.kind !== 'video' ? <ZoomableImage key={item.id} item={item} onError={() => setFailed(true)} /> : <div className="viewer-media" key={item.id} tabIndex={0} aria-label="作品预览">
-      {!item.src || failed ? item.kind === 'long' && !failed ? <LongPlaceholder item={item} /> : <Placeholder item={item} index={index} large failed={failed} /> : <video ref={playerRef} src={item.src} poster={videoPoster(item) || undefined} controls autoPlay playsInline preload="auto" onError={() => setFailed(true)} />}
+      {!item.src || failed ? item.kind === 'long' && !failed ? <LongPlaceholder item={item} /> : <Placeholder item={item} index={index} large failed={failed} /> : <video ref={playerRef} src={playbackSrc} poster={playbackPoster || undefined} controls autoPlay playsInline preload="auto" onError={() => setFailed(true)} />}
     </div>}
   </>}</Dialog>
 }

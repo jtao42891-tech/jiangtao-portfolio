@@ -143,6 +143,11 @@
   .pc-card-wrapper { --card-radius: 20px; }
 }
 
+@media (hover: none) and (pointer: coarse) {
+  /* The entrance remains animated; the photo itself is not a touch target. */
+  .pc-card-shell { pointer-events: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .pc-card { transform: none; }
   .pc-card, .pc-behind, .pc-shine, .pc-glare { transition: none; }

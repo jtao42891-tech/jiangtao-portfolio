@@ -60,13 +60,19 @@ test('zero-width cards wait for layout instead of selecting a whole-screen image
 
 test('mobile images begin loading a screen ahead, desktop keeps its original range', t => {
   const instances = observers(t)
+  const previous = Object.getOwnPropertyDescriptor(globalThis, 'window')
+  Object.defineProperty(globalThis, 'window', { configurable: true, value: { innerHeight: 844 } })
+  t.after(() => {
+    if (previous) Object.defineProperty(globalThis, 'window', previous)
+    else delete globalThis.window
+  })
   const widths = []
-  const cleanup = observePreviewImage({ clientWidth: 118 }, width => widths.push(width), { mobile: true })
+  const cleanup = observePreviewImage({ clientWidth: 118, getBoundingClientRect: () => ({ top: 400, bottom: 518 }) }, (width, priority) => widths.push([width, priority]), { mobile: true })
   const [, intersection] = instances
   assert.equal(intersection.options.rootMargin, '900px 0px')
   assert.deepEqual(widths, [])
   intersection.callback([{ isIntersecting: true }])
-  assert.deepEqual(widths, [118])
+  assert.deepEqual(widths, [[118, 'high']])
   cleanup()
 })
 

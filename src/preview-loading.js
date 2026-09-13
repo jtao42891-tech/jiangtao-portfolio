@@ -8,7 +8,13 @@ export function observePreviewImage(image, onWidth, { mobile = false } = {}) {
   const measure = () => {
     if (disposed) return
     const width = Math.ceil(image.clientWidth)
-    if (width > 0) onWidth(width)
+    if (width > 0) {
+      // Let the browser schedule/cache coalesced requests, but put the phone's
+      // visible artwork ahead of the next-screen prefetches (including GIFs).
+      const rect = mobile ? image.getBoundingClientRect() : null
+      const priority = mobile && rect.bottom > 0 && rect.top < window.innerHeight ? 'high' : undefined
+      onWidth(width, priority)
+    }
   }
   const resize = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(measure)
   const activate = () => {
