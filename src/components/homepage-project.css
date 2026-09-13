@@ -1,0 +1,41 @@
+.homepage-preview-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: stretch; gap: 36px 28px; }
+.homepage-preview-card { display: flex; flex-direction: column; min-width: 0; }
+/* Hidden overflow permits programmatic drag scrolling, but not wheel scrolling. */
+.homepage-preview-cover { display: block; position: relative; flex-shrink: 0; width: 100%; aspect-ratio: var(--long-preview-ratio, 9 / 16); min-height: 0; padding: 0; border: 0; overflow: hidden; color: inherit; background: var(--bg); cursor: grab; text-align: left; user-select: none; }
+.homepage-preview-cover.is-dragging { cursor: grabbing; }
+.homepage-preview-cover:focus-visible { outline: 2px solid var(--text); outline-offset: 4px; }
+.homepage-preview-cover > img { position: absolute; top: 0; left: 0; display: block; width: 100%; height: auto; max-height: none; pointer-events: none; }
+@media (hover: none) and (pointer: coarse) {
+  .homepage-preview-cover { overflow-y: auto; overscroll-behavior-y: auto; touch-action: pan-y pinch-zoom; scrollbar-width: none; cursor: auto; }
+  .homepage-preview-cover::-webkit-scrollbar { display: none; }
+}
+.homepage-preview-footer { display: flex; flex: 1; flex-direction: column; align-items: center; gap: 12px; padding: 20px 12px 14px; }
+.homepage-preview-footer h4 { margin: 0; color: var(--text); font-size: 1rem; line-height: 1.6; font-weight: 500; text-align: center; }
+.homepage-preview-open { display: inline-flex; align-items: center; justify-content: center; max-width: 100%; min-height: 40px; margin-top: auto; padding: 8px 18px; border: 1px solid var(--text); border-radius: 6px; background: transparent; color: var(--text); font-size: 14px; font-weight: 500; line-height: 1.5; white-space: nowrap; transition: background .2s ease; }
+.homepage-preview-open:hover { background: rgba(8, 9, 9, .06); }
+.homepage-preview-open:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; }
+/* Replaces the skip action with a non-interactive, button-shaped instruction. */
+.long-preview-hint { display: inline-flex; align-items: center; justify-content: center; justify-self: end; gap: 8px; min-height: 44px; padding: 10px 14px; border: 1px solid transparent; border-radius: 9px; background: #080909; color: #fff; font-size: 14px; font-weight: 600; line-height: 1.4; white-space: nowrap; cursor: default; }
+.long-preview-hint-icon { display: block; flex-shrink: 0; }
+.long-preview-hint { position: relative; z-index: 3; transform-origin: 50% 100%; }
+@media (forced-colors: active) {
+  .long-preview-hint { color: CanvasText; background: Canvas; border-color: CanvasText; }
+}
+@media (min-width: 701px) {
+  .long-preview-hint { gap: 10px; min-height: 52px; padding: 13px 20px; font-size: 16px; }
+  .long-preview-hint-icon { width: 22px; height: 22px; }
+}
+@media (max-width: 900px) and (min-width: 701px) {
+  .homepage-preview-grid { gap: 32px 18px; }
+  .homepage-preview-footer { padding-inline: 4px; }
+}
+@media (max-width: 700px) {
+  .homepage-preview-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: stretch; gap: 10px; }
+  .homepage-preview-footer { flex: 1; padding: 12px 0 4px; }
+  .homepage-preview-footer h4 { font-size: .875rem; line-height: 1.5; overflow-wrap: anywhere; }
+  .homepage-preview-open { min-height: 36px; padding: 7px 4px; font-size: 12px; }
+}
+@media (max-width: 380px) {
+  .long-preview-hint { padding-inline: 10px; font-size: 12px; }
+  .long-preview-hint-icon { width: 18px; height: 18px; }
+}

@@ -1,0 +1,58 @@
+/* Agency motion: visible by default, animated only by a live GSAP context. */
+.heading-line { display:block; overflow:hidden; padding-block:.08em; margin-block:-.08em; }
+.heading-line > span { display:block; }
+
+/* The IP keeps its existing eye-tracking. Only the hero's text is sequenced. */
+.friendly-hero .title-reveal > span { animation:none; }
+
+.opening-scene { position:fixed; inset:0; z-index:60; visibility:hidden; pointer-events:none; overflow:clip; display:grid; place-items:center; }
+.opening-panel { position:absolute; top:0; bottom:0; width:50.1%; background:var(--bg); }
+.opening-panel--left { left:0; }
+.opening-panel--right { right:0; background:#e2dceb; }
+.opening-word { position:relative; overflow:hidden; padding:.12em .2em; font:italic clamp(100px,19vw,290px)/1 Georgia,serif; letter-spacing:-.09em; color:var(--text); }
+.opening-word > span { display:block; }
+
+/* Oversized English leads each chapter; Chinese titles remain a distinct tier. */
+.module-heading { margin-bottom:clamp(32px,4vw,68px); }
+.motion-display,.gallery-section .category-english { font-family:Epilogue,Arial,sans-serif; font-weight:900; font-style:normal; font-size:clamp(2.8rem,6.8vw,7rem); line-height:1.12; letter-spacing:-.065em; color:var(--text); margin:0; }
+.gallery-section .category-heading { display:block; margin-bottom:clamp(34px,4vw,64px); }
+.category-titles { min-width:0; }
+.gallery-section .category-heading h3 { margin-top:24px; font-size:clamp(1.6rem,2.4vw,2.6rem); line-height:1.4; letter-spacing:0; }
+.gallery-section .category-number,.gallery-section .category-description { display:none; }
+.gallery-section .sequence-heading h4 { font-size:clamp(1.4rem,2vw,1.75rem); }
+.heading-line { overflow:clip; }
+.studio-headline .heading-line { max-width:100%; }
+
+@media (max-width:700px) {
+  /* About chapter label and spacing remain mobile-only adjustments. */
+  #about.about-section { padding-top:72px; }
+  #about>.section-topline { display:none; }
+  .motion-display,.gallery-section .category-english { font-size:clamp(2rem,7.1vw,3.8rem); line-height:1.16; letter-spacing:-.06em; }
+  .gallery-section .category-heading h3 { font-size:1.6rem; margin-top:18px; }
+  .category-titles-with-action { row-gap:18px; }
+}
+@media (max-width:380px) {
+  .gallery-section .category-heading .category-titles-with-action > h3 { font-size:clamp(1.125rem,6vw,1.6rem); }
+}
+
+/* Native touch/trackpad momentum; desktop mouse motion is handled by the rail. */
+.creative-rail[data-scroll-input='native'] { scroll-snap-type:x proximity; }
+.creative-rail[data-scroll-input='direct'] { scroll-snap-type:none; }
+
+.dialog.media-lightbox[open] { animation:media-dialog-in .38s cubic-bezier(.22,.75,.18,1) both; transform-origin:50% 54%; }
+.dialog.media-lightbox[open]::backdrop { animation:media-backdrop-in .32s ease both; }
+.dialog.media-lightbox[open][data-closing='true'] { animation:media-dialog-out .18s ease-in both; pointer-events:none; }
+.dialog.media-lightbox[open][data-closing='true']::backdrop { animation:media-backdrop-out .18s ease-in both; }
+.media-lightbox .viewer-media > :is(img,.media-placeholder,.long-placeholder) { animation:media-art-in .35s cubic-bezier(.22,.75,.18,1) both; }
+.media-lightbox .viewer-image-stage > img { animation:media-art-in .35s cubic-bezier(.22,.75,.18,1) both; }
+@keyframes media-dialog-in { from { opacity:0; transform:translateY(18px) scale(.975); } to { opacity:1; transform:none; } }
+@keyframes media-dialog-out { from { opacity:1; transform:none; } to { opacity:0; transform:translateY(10px) scale(.985); } }
+@keyframes media-backdrop-in { from { opacity:0; } to { opacity:1; } }
+@keyframes media-backdrop-out { from { opacity:1; } to { opacity:0; } }
+@keyframes media-art-in { from { opacity:0; } to { opacity:1; } }
+
+@media (prefers-reduced-motion:reduce) {
+  .opening-scene { display:none; }
+  .dialog.media-lightbox[open],.dialog.media-lightbox[open]::backdrop,.media-lightbox .viewer-media > *,.media-lightbox .viewer-image-stage > img { animation:none; }
+  .creative-rail[data-scroll-input='native'] { scroll-snap-type:none; }
+}

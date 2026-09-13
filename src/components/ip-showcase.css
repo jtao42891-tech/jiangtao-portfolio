@@ -1,0 +1,45 @@
+/* A contained character stage, not a replacement hero or an orbiting card wall. */
+.ip-showcase { background:var(--ip-background,#e1d9ec); transition:background-color 1.6s ease; overflow:hidden; }
+.ip-stage { height:clamp(430px,45vw,660px); position:relative; isolation:isolate; overflow:hidden; cursor:grab; touch-action:pan-y pinch-zoom; user-select:none; outline-offset:-3px; }
+.ip-stage:focus-visible { outline:2px solid #574660; }
+.ip-stage-top { position:absolute; z-index:120; top:25px; left:30px; right:30px; display:flex; justify-content:space-between; gap:20px; color:#706079; font-size:12px; letter-spacing:.1em; pointer-events:none; }
+.ip-ghost { position:absolute; top:12%; left:0; width:100%; text-align:center; font:900 clamp(54px,11.3vw,184px)/1 Epilogue,Arial,sans-serif; letter-spacing:-.065em; color:rgba(255,255,255,.44); pointer-events:none; white-space:nowrap; }
+.ip-ghost--short { top:7%; font-size:clamp(150px,27vw,420px); color:rgba(255,255,255,.55); }
+.ip-figure { --ip-position-x:var(--ip-x); --ip-render-scale:var(--ip-scale); position:absolute; bottom:5%; left:50%; height:78%; width:min(42%,440px); display:flex; align-items:flex-end; justify-content:center; padding:0; border:0; background:none; transform:translate3d(calc(-50% + var(--ip-position-x)),var(--ip-y),0) scale(var(--ip-render-scale)); transform-origin:50% 100%; opacity:var(--ip-opacity); filter:blur(var(--ip-blur)); z-index:var(--ip-layer); pointer-events:none; will-change:transform; }
+.ip-figure img { display:block; width:auto; height:auto; max-width:100%; max-height:100%; object-fit:contain; pointer-events:auto; cursor:grab; }
+.ip-stage.is-dragging,.ip-stage.is-dragging * { cursor:grabbing; }
+.ip-drag-cue { position:absolute; z-index:130; top:46%; display:grid; place-items:center; width:44px; height:44px; padding:8px; border:0; border-radius:0; background:none; color:#63536d; opacity:.7; cursor:pointer; touch-action:manipulation; }
+.ip-drag-cue:hover,.ip-drag-cue:focus-visible { opacity:1; color:#080909; }
+.ip-drag-cue--left { left:18px; }
+.ip-drag-cue--right { right:18px; }
+.ip-placeholder { pointer-events:auto; }
+.ip-placeholder { display:flex; flex-direction:column; align-items:center; justify-content:space-between; gap:20px; width:100%; max-width:320px; height:100%; max-height:470px; margin:auto auto 0; padding:28px 20px; border:1px dashed #a998ba; border-radius:120px 120px 10px 10px; background:rgba(255,255,255,.23); color:#8c789b; }
+.ip-placeholder-label { font-size:12px; letter-spacing:.11em; padding-top:28px; }
+.ip-placeholder strong { font:900 clamp(42px,5.6vw,78px)/1 Epilogue,Arial,sans-serif; letter-spacing:-.05em; color:#a493b4; }
+.ip-placeholder-note { font-size:14px; line-height:1.8; }
+.ip-placeholder-note small { display:block; font-size:12px; color:#92849d; }
+.ip-info { position:relative; z-index:5; display:grid; grid-template-columns:minmax(0,1fr) auto; gap:28px; padding:29px 34px 32px; border-top:1px solid rgba(109,86,131,.2); background:rgba(255,255,255,.16); }
+.ip-active-label { font-size:12px; color:#7b6688; letter-spacing:.1em; }
+.ip-info h4 { margin:10px 0 9px; font-size:26px; line-height:1.35; font-weight:600; letter-spacing:-.04em; }
+.ip-description { max-width:56ch; font-size:16px; line-height:1.8; color:#63596a; }
+.ip-hint { align-self:end; color:#7b6988; font-size:12px; line-height:1.9; text-align:right; }
+.ip-hint span { display:block; }
+@media (max-width:700px) {
+  .ip-stage { height:clamp(380px,80vw,520px); }
+  .ip-stage-top { top:22px; left:20px; right:20px; font-size:12px; letter-spacing:.03em; }
+  .ip-ghost { top:17%; font-size:13vw; }
+  .ip-ghost--short { top:18%; font-size:28vw; }
+  .ip-figure { --ip-position-x:var(--ip-x-mobile); --ip-render-scale:var(--ip-scale-mobile); width:58%; height:69%; bottom:7%; }
+  .ip-drag-cue svg { width:22px; height:22px; }
+  .ip-drag-cue--left { left:3px; }
+  .ip-drag-cue--right { right:3px; }
+  .ip-placeholder { padding:20px 12px; border-radius:80px 80px 8px 8px; }
+  .ip-placeholder-label { font-size:12px; letter-spacing:0; padding-top:13px; }
+  .ip-placeholder strong { font-size:clamp(36px,10vw,62px); }
+  .ip-info { grid-template-columns:1fr; gap:22px; padding:24px; }
+  .ip-info h4 { font-size:24px; }
+  .ip-hint { text-align:left; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .ip-showcase,.ip-figure { transition:none; }
+}

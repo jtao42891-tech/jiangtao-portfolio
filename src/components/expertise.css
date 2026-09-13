@@ -1,0 +1,24 @@
+/* Keep the desktop chapter intact; compact only the mobile capability list. */
+#expertise .expertise-mobile-copy { display: none; }
+
+@media (max-width: 760px) {
+  #expertise.expertise-section { padding-block: 60px 56px; }
+  #expertise > .section-topline,
+  #expertise .expertise-desktop-copy,
+  #expertise .expertise-heading > p,
+  #expertise .strength-english,
+  #expertise .strength-tags { display: none; }
+  #expertise .expertise-mobile-copy { display: block; }
+  #expertise .module-heading { margin-bottom: 14px; }
+  #expertise .motion-display { font-size: clamp(32px, 8.2vw, 44px); line-height: 1.16; }
+  #expertise .expertise-heading { display: block; margin-bottom: 24px; }
+  #expertise .expertise-heading h2 { font-size: 16px; line-height: 1.6; font-weight: 400; letter-spacing: 0; color: var(--muted); }
+  #expertise .strength-grid { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  #expertise .strength-card { display: grid; grid-template-columns: 22px minmax(0, 1fr) 36px; gap: 8px 12px; padding: 20px 0; }
+  #expertise .strength-card:last-child { border-bottom: 1px solid var(--line); }
+  #expertise .strength-top { display: contents; }
+  #expertise .strength-top > span { grid-column: 1; grid-row: 1; align-self: center; padding: 0; font-size: 11px; }
+  #expertise .capability-symbol { grid-column: 3; grid-row: 1 / 3; align-self: center; width: 36px; height: 36px; }
+  #expertise .strength-card h3 { grid-column: 2; grid-row: 1; font-size: 17px; font-weight: 500; line-height: 1.5; }
+  #expertise .strength-description { grid-column: 2; grid-row: 2; min-width: 0; margin: 0; font-size: 14px; line-height: 1.75; text-wrap: balance; }
+}

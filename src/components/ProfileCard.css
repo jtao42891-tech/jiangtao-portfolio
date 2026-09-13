@@ -1,0 +1,149 @@
+/* React Bits ProfileCard, adapted for the supplied full-frame portrait. */
+.pc-card-wrapper {
+  --pointer-x: 50%;
+  --pointer-y: 50%;
+  --pointer-from-center: 0;
+  --pointer-from-top: .5;
+  --pointer-from-left: .5;
+  --card-opacity: 0;
+  --rotate-x: 0deg;
+  --rotate-y: 0deg;
+  --background-x: 50%;
+  --background-y: 50%;
+  --sunpillar-1: hsl(2, 100%, 73%);
+  --sunpillar-2: hsl(53, 100%, 69%);
+  --sunpillar-3: hsl(93, 100%, 69%);
+  --sunpillar-4: hsl(176, 100%, 76%);
+  --sunpillar-5: hsl(228, 100%, 74%);
+  --sunpillar-6: hsl(283, 100%, 73%);
+  --card-radius: 26px;
+  position: relative;
+  perspective: 800px;
+  touch-action: auto;
+}
+
+/* Keep the existing responsive frame dimensions and mobile centering. */
+.portrait-frame.pc-card-wrapper {
+  overflow: visible;
+  background: transparent;
+}
+
+.pc-behind {
+  position: absolute;
+  inset: -12px;
+  pointer-events: none;
+  background: radial-gradient(circle at var(--pointer-x) var(--pointer-y), rgba(160, 126, 221, .65), rgba(154, 189, 245, .35) 35%, transparent 70%);
+  filter: blur(28px);
+  opacity: 0;
+  transition: opacity .4s ease;
+}
+
+.pc-card-shell {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  /* Pass the wrapper's perspective through without rotating the hit area. */
+  transform-style: preserve-3d;
+}
+
+.pc-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: var(--card-radius);
+  background: #e0d9ee;
+  box-shadow: 0 10px 30px -20px rgba(57, 39, 80, .4);
+  transform: rotateX(var(--rotate-y)) rotateY(var(--rotate-x));
+  backface-visibility: hidden;
+  transition: box-shadow .4s ease;
+}
+
+.pc-inside, .pc-avatar-content, .pc-shine, .pc-glare {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.pc-avatar-content .pc-avatar {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.pc-shine {
+  --space: 5%;
+  z-index: 2;
+  background-image:
+    repeating-linear-gradient(0deg,
+      var(--sunpillar-1) calc(var(--space) * 1),
+      var(--sunpillar-2) calc(var(--space) * 2),
+      var(--sunpillar-3) calc(var(--space) * 3),
+      var(--sunpillar-4) calc(var(--space) * 4),
+      var(--sunpillar-5) calc(var(--space) * 5),
+      var(--sunpillar-6) calc(var(--space) * 6),
+      var(--sunpillar-1) calc(var(--space) * 7)),
+    repeating-linear-gradient(-45deg, #0e152e 0%, hsl(180, 10%, 60%) 3.8%, hsl(180, 29%, 66%) 4.5%, hsl(180, 10%, 60%) 5.2%, #0e152e 10%, #0e152e 12%),
+    radial-gradient(farthest-corner circle at var(--pointer-x) var(--pointer-y), rgba(0, 0, 0, .1) 12%, rgba(0, 0, 0, .15) 20%, rgba(0, 0, 0, .25) 120%);
+  background-position: 0 var(--background-y), var(--background-x) var(--background-y), center;
+  background-size: 500% 500%, 300% 300%, 200% 200%;
+  background-blend-mode: color, hard-light;
+  mix-blend-mode: color-dodge;
+  filter: brightness(.85) contrast(1.3) saturate(.65);
+  /* Protect the face while retaining a holographic reflection at the edges. */
+  mask-image: radial-gradient(ellipse at 50% 42%, transparent 12%, rgba(0, 0, 0, .3) 45%, #000 80%);
+  opacity: 0;
+  transition: opacity .4s ease;
+}
+
+.pc-shine::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(45deg, var(--sunpillar-4), var(--sunpillar-5), var(--sunpillar-6), var(--sunpillar-1), var(--sunpillar-2), var(--sunpillar-3));
+  background-size: 250% 250%;
+  background-position: var(--pointer-x) var(--pointer-y);
+  mix-blend-mode: soft-light;
+}
+
+.pc-glare {
+  z-index: 3;
+  background-image: radial-gradient(farthest-corner circle at var(--pointer-x) var(--pointer-y), rgba(247, 241, 255, .6) 0%, rgba(237, 235, 255, .12) 35%, transparent 70%);
+  mix-blend-mode: soft-light;
+  opacity: 0;
+  transition: opacity .4s ease;
+}
+
+.pc-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  border: 1px solid rgba(255, 255, 255, .3);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* A single automatic entrance is available on touch screens as well. */
+@media (prefers-reduced-motion: no-preference) {
+  .pc-active, .pc-intro { --card-opacity: 1; }
+  :is(.pc-active, .pc-intro) .pc-behind { opacity: .8; }
+  :is(.pc-active, .pc-intro) .pc-card {
+    box-shadow: calc((var(--pointer-from-left) - .5) * -18px) calc(16px + var(--pointer-from-top) * 10px) 44px -18px rgba(64, 43, 88, .42);
+  }
+  :is(.pc-active, .pc-intro) .pc-shine { opacity: .32; }
+  :is(.pc-active, .pc-intro) .pc-glare { opacity: .65; }
+}
+
+@media (max-width: 650px) {
+  .pc-card-wrapper { --card-radius: 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pc-card { transform: none; }
+  .pc-card, .pc-behind, .pc-shine, .pc-glare { transition: none; }
+}
