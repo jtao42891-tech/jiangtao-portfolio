@@ -11,7 +11,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const outputDir = path.join(root, 'public/media/mobile-video')
 const ffmpeg = process.env.FFMPEG_PATH || 'ffmpeg'
 const ffprobe = process.env.FFPROBE_PATH || 'ffprobe'
-const profile = { version: 1, longEdge: 1280, shortEdge: 720, fps: 30, crf: 24, preset: 'medium', audioBitrate: '96k' }
+const profile = { version: 2, longEdge: 960, shortEdge: 540, fps: 30, crf: 25, preset: 'slow', maxrate: '1100k', bufsize: '1100k', keyframeSeconds: 1, audioBitrate: '80k' }
 
 function run(command, args) {
   return new Promise((resolve, reject) => {
@@ -55,6 +55,7 @@ for (const src of sources) {
   const width = Math.max(2, Math.floor(originalVideo.width * scale / 2) * 2)
   const height = Math.max(2, Math.floor(originalVideo.height * scale / 2) * 2)
   const fps = frameRate(originalVideo)
+  const keyframeInterval = Math.max(1, Math.round(Math.min(Number.isFinite(fps) ? fps : profile.fps, profile.fps) * profile.keyframeSeconds))
   const filters = [`scale=${width}:${height}:flags=lanczos`, 'setsar=1']
   if (Number.isFinite(fps) && fps > profile.fps) filters.push(`fps=${profile.fps}`)
   const name = `${src.replace(/^\/works\//, '').replace(/\.mp4$/i, '').replaceAll('/', '-')}-${await sourceHash(original)}.mp4`
@@ -66,6 +67,7 @@ for (const src of sources) {
     await run(ffmpeg, ['-hide_banner', '-loglevel', 'error', '-nostdin', '-y', '-threads', '2', '-i', original,
       '-map', '0:v:0', '-map', '0:a?', '-vf', filters.join(','),
       '-c:v', 'libx264', '-preset', profile.preset, '-crf', String(profile.crf), '-pix_fmt', 'yuv420p',
+      '-maxrate', profile.maxrate, '-bufsize', profile.bufsize, '-g', String(keyframeInterval), '-keyint_min', String(keyframeInterval), '-sc_threshold', '0',
       '-threads', '2', '-filter_threads', '2', '-c:a', 'aac', '-b:a', profile.audioBitrate,
       '-movflags', '+faststart', '-map_metadata', '-1', output])
   }

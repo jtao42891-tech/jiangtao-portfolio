@@ -1,56 +1,56 @@
 {
   "/works/ai-video/01-ai-video.mp4": {
-    "src": "/media/mobile-video/ai-video-01-ai-video-9784a80daecd.mp4",
-    "width": 720,
-    "height": 960,
+    "src": "/media/mobile-video/ai-video-01-ai-video-1515d7c7beb2.mp4",
+    "width": 540,
+    "height": 720,
     "duration": 9.233333
   },
   "/works/ai-video/02-ai-video.mp4": {
-    "src": "/media/mobile-video/ai-video-02-ai-video-833d5d5ddfb6.mp4",
-    "width": 1280,
-    "height": 720,
+    "src": "/media/mobile-video/ai-video-02-ai-video-0fa9ba4a27a8.mp4",
+    "width": 960,
+    "height": 540,
     "duration": 11.966667
   },
   "/works/ai-video/03-ai-video.mp4": {
-    "src": "/media/mobile-video/ai-video-03-ai-video-c0adac64507e.mp4",
-    "width": 1280,
-    "height": 720,
+    "src": "/media/mobile-video/ai-video-03-ai-video-4d915b2b4fc5.mp4",
+    "width": 960,
+    "height": 540,
     "duration": 13.211995
   },
   "/works/ai-video/04-ai-video.mp4": {
-    "src": "/media/mobile-video/ai-video-04-ai-video-873b8f33323d.mp4",
-    "width": 1280,
-    "height": 720,
+    "src": "/media/mobile-video/ai-video-04-ai-video-28bc04a62009.mp4",
+    "width": 960,
+    "height": 540,
     "duration": 8.057007
   },
   "/works/three-d-motion/01-motion.mp4": {
-    "src": "/media/mobile-video/three-d-motion-01-motion-2aab2e17d699.mp4",
-    "width": 1280,
-    "height": 720,
+    "src": "/media/mobile-video/three-d-motion-01-motion-7e80c3c6c50e.mp4",
+    "width": 960,
+    "height": 540,
     "duration": 6.72
   },
   "/works/three-d-motion/02-motion-portrait.mp4": {
-    "src": "/media/mobile-video/three-d-motion-02-motion-portrait-f71ee05a594c.mp4",
-    "width": 720,
-    "height": 950,
+    "src": "/media/mobile-video/three-d-motion-02-motion-portrait-8eceb7cc061e.mp4",
+    "width": 540,
+    "height": 712,
     "duration": 5.84
   },
   "/works/three-d-motion/03-skincare-motion.mp4": {
-    "src": "/media/mobile-video/three-d-motion-03-skincare-motion-c402ded8e978.mp4",
-    "width": 776,
-    "height": 720,
+    "src": "/media/mobile-video/three-d-motion-03-skincare-motion-66d03dd5e02e.mp4",
+    "width": 582,
+    "height": 540,
     "duration": 3.2
   },
   "/works/three-d-motion/04-motion.mp4": {
-    "src": "/media/mobile-video/three-d-motion-04-motion-fcb3e4072f32.mp4",
-    "width": 1280,
-    "height": 720,
+    "src": "/media/mobile-video/three-d-motion-04-motion-67fe3a8fa657.mp4",
+    "width": 960,
+    "height": 540,
     "duration": 8.04
   },
   "/works/three-d-motion/05-motion.mp4": {
-    "src": "/media/mobile-video/three-d-motion-05-motion-c4e129abe410.mp4",
-    "width": 1280,
-    "height": 720,
+    "src": "/media/mobile-video/three-d-motion-05-motion-356eaf1ab821.mp4",
+    "width": 960,
+    "height": 540,
     "duration": 4.04
   }
 }

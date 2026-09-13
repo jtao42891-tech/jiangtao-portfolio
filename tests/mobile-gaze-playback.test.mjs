@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { createMobileGazePlayback, createMobileGazeSourceLoader, deferMobileGazeLoad } from '../src/mobile-gaze-playback.js'
+import { createMobileGazeAnimation, createMobileGazeSourceLoader, deferMobileGazeLoad, MOBILE_GAZE_ANIMATION_SRC } from '../src/mobile-gaze-playback.js'
 
 class Target extends EventTarget {
   listeners = new Map()
@@ -17,23 +17,12 @@ class Target extends EventTarget {
   listenerCount() { return [...this.listeners.values()].reduce((total, set) => total + set.size, 0) }
 }
 
-class Video extends Target {
-  paused = true
-  src = ''
-  attributes = new Map()
-  plays = 0
-  pauses = 0
-  outcomes = []
-  setAttribute(name, value) { this.attributes.set(name, value) }
-  play() {
-    const attempt = ++this.plays
-    this.paused = false
-    return Promise.resolve(this.outcomes.shift()).catch(error => {
-      if (attempt === this.plays) this.paused = true
-      throw error
-    })
-  }
-  pause() { this.pauses++; this.paused = true }
+class Image extends Target {
+  attributes = new Map([['src', '/hero-poster.jpg']])
+  writes = []
+  getAttribute(name) { return this.attributes.get(name) ?? null }
+  get src() { return this.getAttribute('src') }
+  set src(value) { this.attributes.set('src', value); this.writes.push(value) }
 }
 
 function pending() {
@@ -44,17 +33,14 @@ function pending() {
 
 const flush = () => new Promise(resolve => setImmediate(resolve))
 
-function playback(t, overrides = {}) {
-  const video = new Video()
+function animation(t, overrides = {}) {
+  const image = new Image()
   const documentTarget = Object.assign(new Target(), { hidden: false })
   const jobs = []
-  const shown = []
   let loads = 0
-  const player = createMobileGazePlayback({
-    video,
+  const player = createMobileGazeAnimation({
+    image,
     documentTarget,
-    showVideo: () => shown.push('video'),
-    showPoster: () => shown.push('poster'),
     defer: callback => {
       const job = { callback, cancelled: false }
       jobs.push(job)
@@ -64,54 +50,55 @@ function playback(t, overrides = {}) {
     ...overrides,
   })
   t.after(() => player.dispose())
-  return { video, documentTarget, jobs, shown, player, get loads() { return loads },
+  return { image, documentTarget, jobs, player, get loads() { return loads },
     run: () => { const job = jobs.shift(); assert.ok(job); if (!job.cancelled) job.callback() },
   }
 }
 
-test('mobile gaze waits for activation and deferred work, then starts muted inline playback once', async t => {
-  const rig = playback(t)
+test('visible mobile gaze animates after its deferred download without gestures or video APIs', async t => {
+  const download = pending()
+  let requests = 0
+  const rig = animation(t, { loadSource: () => { requests++; return download.promise } })
   assert.equal(rig.jobs.length, 0)
-  assert.equal(rig.loads, 0)
-  assert.equal(rig.video.src, '')
+  assert.equal(requests, 0)
+  assert.equal(rig.image.src, '/hero-poster.jpg')
   rig.player.setActive(true)
   rig.player.setActive(true)
   assert.equal(rig.jobs.length, 1)
-  assert.equal(rig.loads, 0)
+  assert.equal(requests, 0)
   rig.run()
-  await flush()
-  assert.equal(rig.loads, 1)
-  assert.equal(rig.video.src, 'blob:mobile-gaze')
-  assert.equal(rig.video.preload, 'none')
-  assert.equal(rig.video.plays, 1)
-  for (const name of ['muted', 'defaultMuted', 'playsInline', 'loop']) assert.equal(rig.video[name], true, name)
-  for (const name of ['muted', 'playsinline']) assert.equal(rig.video.attributes.get(name), '')
-  assert.deepEqual(rig.shown, [])
-  rig.video.emit('canplay')
   rig.player.setActive(true)
-  assert.equal(rig.video.plays, 1)
-  rig.video.emit('playing')
-  assert.deepEqual(rig.shown, ['video'])
+  assert.equal(requests, 1)
+  assert.equal(rig.jobs.length, 0)
+  assert.equal(rig.image.src, '/hero-poster.jpg')
+  download.resolve('blob:mobile-gaze')
+  await flush()
+  assert.equal(rig.image.src, 'blob:mobile-gaze')
+  rig.player.setActive(true)
+  assert.deepEqual(rig.image.writes, ['blob:mobile-gaze'])
+  assert.deepEqual([...rig.image.listeners.keys()], ['error'])
+  assert.equal(rig.documentTarget.listenerCount(), 0)
+  assert.equal('play' in rig.image, false)
+  assert.equal('pause' in rig.image, false)
 })
 
 test('hero and footer share one low-priority download and one object URL', async t => {
   const download = pending()
   const requests = [], blobs = []
-  const blob = { type: 'video/mp4' }
+  const blob = { type: 'image/webp' }
   const loadSource = createMobileGazeSourceLoader({
-    fetchVideo: (...args) => { requests.push(args); return download.promise },
+    fetchImage: (...args) => { requests.push(args); return download.promise },
     createURL: value => { blobs.push(value); return 'blob:shared-mobile' },
   })
-  const hero = playback(t, { loadSource })
-  const footer = playback(t, { loadSource })
+  const hero = animation(t, { loadSource })
+  const footer = animation(t, { loadSource })
   for (const rig of [hero, footer]) { rig.player.setActive(true); rig.run() }
-  assert.deepEqual(requests, [['/footer-mobile.mp4', { priority: 'low' }]])
+  assert.deepEqual(requests, [[MOBILE_GAZE_ANIMATION_SRC, { priority: 'low' }]])
   download.resolve({ ok: true, blob: async () => blob })
   await flush()
   assert.deepEqual(blobs, [blob])
   for (const rig of [hero, footer]) {
-    assert.equal(rig.video.src, 'blob:shared-mobile')
-    assert.equal(rig.video.plays, 1)
+    assert.equal(rig.image.src, 'blob:shared-mobile')
   }
   assert.equal(await loadSource(), 'blob:shared-mobile')
   assert.equal(requests.length, 1)
@@ -120,7 +107,7 @@ test('hero and footer share one low-priority download and one object URL', async
 test('failed shared download can be retried instead of caching the rejection', async () => {
   let requests = 0
   const loadSource = createMobileGazeSourceLoader({
-    fetchVideo: async () => ({ ok: ++requests > 1, blob: async () => 'downloaded' }),
+    fetchImage: async () => ({ ok: ++requests > 1, blob: async () => 'downloaded' }),
     createURL: blob => `blob:${blob}`,
   })
   await assert.rejects(loadSource(), /Mobile character unavailable/)
@@ -128,62 +115,61 @@ test('failed shared download can be retried instead of caching the rejection', a
   assert.equal(requests, 2)
 })
 
-test('offscreen and hidden activation changes pause playback and resume the existing source', async t => {
-  const rig = playback(t)
+test('offscreen and hidden activation restore the poster and resume without another download', async t => {
+  const rig = animation(t)
   rig.player.setActive(true)
   rig.run()
   await flush()
   rig.player.setActive(false)
-  assert.equal(rig.video.paused, true)
-  rig.video.emit('playing')
-  assert.deepEqual(rig.shown, [])
+  assert.equal(rig.image.src, '/hero-poster.jpg')
   rig.player.setActive(true)
-  await flush()
-  assert.equal(rig.video.plays, 2)
+  assert.equal(rig.image.src, 'blob:mobile-gaze')
   rig.documentTarget.hidden = true
   // StudioFooter supplies visibilitychange and intersection state through setActive.
   rig.player.setActive(false)
-  rig.video.emit('canplay')
-  rig.video.emit('playing')
-  assert.equal(rig.video.paused, true)
-  assert.equal(rig.video.plays, 2)
-  assert.deepEqual(rig.shown, [])
+  assert.equal(rig.image.src, '/hero-poster.jpg')
+  rig.player.setActive(true)
+  assert.equal(rig.image.src, '/hero-poster.jpg')
   rig.documentTarget.hidden = false
   rig.player.setActive(true)
-  await flush()
-  assert.equal(rig.video.plays, 3)
+  assert.equal(rig.image.src, 'blob:mobile-gaze')
   assert.equal(rig.loads, 1)
   assert.equal(rig.jobs.length, 0)
+  assert.deepEqual(rig.image.writes, ['blob:mobile-gaze', '/hero-poster.jpg', 'blob:mobile-gaze', '/hero-poster.jpg', 'blob:mobile-gaze'])
 })
 
-test('download finishing offscreen does not play until reactivated', async t => {
-  const source = pending()
-  const rig = playback(t, { loadSource: () => source.promise })
-  rig.player.setActive(true)
-  rig.run()
-  rig.player.setActive(false)
-  source.resolve('blob:late')
-  await flush()
-  assert.equal(rig.video.src, 'blob:late')
-  assert.equal(rig.video.plays, 0)
-  rig.player.setActive(true)
-  await flush()
-  assert.equal(rig.video.plays, 1)
-})
-
-test('hidden document prevents a queued callback from starting a download', t => {
-  const rig = playback(t)
+test('queued and completed downloads never change a hidden or offscreen image', async t => {
+  for (const state of ['hidden', 'offscreen']) {
+    const source = pending()
+    let requests = 0
+    const rig = animation(t, { loadSource: () => { requests++; return source.promise } })
+    rig.player.setActive(true)
+    rig.run()
+    if (state === 'hidden') rig.documentTarget.hidden = true
+    else rig.player.setActive(false)
+    source.resolve('blob:late')
+    await flush()
+    assert.deepEqual(rig.image.writes, [], state)
+    assert.equal(rig.image.src, '/hero-poster.jpg', state)
+    rig.documentTarget.hidden = false
+    rig.player.setActive(true)
+    assert.equal(rig.image.src, 'blob:late', state)
+    assert.equal(requests, 1, state)
+    assert.equal(rig.jobs.length, 0, state)
+  }
+  const rig = animation(t)
   rig.player.setActive(true)
   rig.documentTarget.hidden = true
   rig.run()
   assert.equal(rig.loads, 0)
+  assert.deepEqual(rig.image.writes, [])
   rig.documentTarget.hidden = false
   rig.player.setActive(true)
   assert.equal(rig.jobs.length, 1)
 })
 
 test('offscreen and disposed queued work is cancelled, including a late callback', t => {
-  const rig = playback(t)
+  const rig = animation(t)
   rig.player.setActive(true)
   const first = rig.jobs[0]
   rig.player.setActive(false)
@@ -194,68 +180,51 @@ test('offscreen and disposed queued work is cancelled, including a late callback
   rig.player.dispose()
   assert.equal(second.cancelled, true)
   second.callback()
+  rig.player.setActive(true)
   assert.equal(rig.loads, 0)
-  assert.equal(rig.video.plays, 0)
-  assert.equal(rig.video.listenerCount(), 0)
+  assert.deepEqual(rig.image.writes, [])
+  assert.equal(rig.image.listenerCount(), 0)
   assert.equal(rig.documentTarget.listenerCount(), 0)
 })
 
-test('disposal during download leaves the video untouched and removes gesture/media listeners', async t => {
-  const source = pending()
-  const rig = playback(t, { loadSource: () => source.promise })
+test('disposal during download ignores late success and failure and removes listeners', async t => {
+  for (const outcome of ['resolve', 'reject']) {
+    const source = pending()
+    const rig = animation(t, { loadSource: () => source.promise })
+    rig.player.setActive(true)
+    rig.run()
+    rig.player.dispose()
+    source[outcome](outcome === 'resolve' ? 'blob:disposed' : new Error('network error'))
+    await flush()
+    rig.image.emit('error')
+    assert.equal(rig.image.src, '/hero-poster.jpg', outcome)
+    assert.deepEqual(rig.image.writes, [], outcome)
+    assert.equal(rig.image.listenerCount(), 0, outcome)
+    assert.equal(rig.documentTarget.listenerCount(), 0, outcome)
+  }
+})
+
+test('download and image errors retain the poster, with safe retry and disposal cleanup', async t => {
+  let requests = 0
+  const rig = animation(t, { loadSource: () => ++requests === 1
+    ? Promise.reject(new Error('network error')) : Promise.resolve('blob:recovered') })
   rig.player.setActive(true)
   rig.run()
+  await flush()
+  assert.equal(rig.image.src, '/hero-poster.jpg')
+  assert.deepEqual(rig.image.writes, [])
+  rig.player.setActive(true)
+  rig.run()
+  await flush()
+  assert.equal(rig.image.src, 'blob:recovered')
+  rig.image.emit('error')
+  assert.equal(rig.image.src, '/hero-poster.jpg')
+  rig.image.emit('error')
+  assert.deepEqual(rig.image.writes, ['blob:recovered', '/hero-poster.jpg'])
   rig.player.dispose()
-  source.resolve('blob:disposed')
-  await flush()
-  rig.video.emit('playing')
-  rig.video.emit('canplay')
-  rig.video.emit('error')
-  rig.documentTarget.emit('pointerup')
-  assert.equal(rig.video.src, '')
-  assert.equal(rig.video.plays, 0)
-  assert.deepEqual(rig.shown, [])
-  assert.equal(rig.video.listenerCount(), 0)
+  assert.equal(rig.image.listenerCount(), 0)
   assert.equal(rig.documentTarget.listenerCount(), 0)
-})
-
-test('blocked autoplay keeps the poster and retries on a normal page gesture', async t => {
-  const rig = playback(t)
-  const firstPlay = pending()
-  rig.video.outcomes.push(firstPlay.promise)
-  rig.player.setActive(true)
-  rig.run()
-  await flush()
-  firstPlay.reject(new Error('NotAllowedError'))
-  await flush()
-  assert.equal(rig.video.paused, true)
-  assert.deepEqual(rig.shown, ['poster'])
-  rig.documentTarget.emit('pointerup')
-  await flush()
-  assert.equal(rig.video.plays, 2)
-  rig.video.emit('playing')
-  assert.deepEqual(rig.shown, ['poster', 'video'])
-  rig.documentTarget.emit('pointerup')
-  assert.equal(rig.video.plays, 2)
-})
-
-test('an old rejected play promise cannot hide a successful offscreen/resume attempt', async t => {
-  const rig = playback(t)
-  const firstPlay = pending()
-  rig.video.outcomes.push(firstPlay.promise)
-  rig.player.setActive(true)
-  rig.run()
-  await flush()
-  rig.player.setActive(false)
-  rig.player.setActive(true)
-  await flush()
-  rig.video.emit('playing')
-  firstPlay.reject(new Error('AbortError'))
-  await flush()
-  assert.deepEqual(rig.shown, ['video'])
-  assert.equal(rig.video.paused, false)
-  rig.documentTarget.emit('pointerup')
-  assert.equal(rig.video.plays, 2)
+  assert.equal(requests, 2)
 })
 
 function scheduler({ idle = true } = {}) {

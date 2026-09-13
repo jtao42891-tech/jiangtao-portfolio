@@ -1,7 +1,9 @@
-import { createContext, useContext, useEffect, useRef, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
+import { flushSync } from 'react-dom'
 import { gallerySections, sectionItems } from '../gallery-data'
 import { mobilePreviewImageProps, videoPlaybackSource, videoPoster } from '../media-preview'
 import { isMobilePreviewDevice } from '../preview-loading'
+import { startMobileVideoPlayback } from '../mobile-video-playback'
 import PreviewImage from './PreviewImage'
 import useDragScroll from '../useDragScroll'
 import { createHintBounceMotion } from '../motion/hintBounce'
@@ -141,13 +143,21 @@ function MediaViewer({ viewer, onClose }) {
   const [index, setIndex] = useState(viewer.index)
   const [failed, setFailed] = useState(false)
   const playerRef = useRef(null)
+  const stopMobilePlayerRef = useRef(null)
   const item = viewer.items[index]
   const mobile = isMobilePreviewDevice()
   const playbackSrc = videoPlaybackSource(item.src, mobile)
+  const attachPlayer = useCallback(player => {
+    stopMobilePlayerRef.current?.()
+    stopMobilePlayerRef.current = null
+    playerRef.current = player
+    if (player && mobile) stopMobilePlayerRef.current = startMobileVideoPlayback(player, playbackSrc)
+  }, [mobile, playbackSrc])
   const poster = videoPoster(item)
   const playbackPoster = mobile && poster ? mobilePreviewImageProps(poster, window.innerWidth, window.devicePixelRatio).src : poster
   const change = delta => { setIndex(current => Math.max(0, Math.min(viewer.items.length - 1, current + delta))); setFailed(false) }
   useEffect(() => {
+    if (mobile) return undefined
     const player = playerRef.current
     if (!player) return undefined
     const playImmediately = () => {
@@ -163,7 +173,7 @@ function MediaViewer({ viewer, onClose }) {
       player.removeEventListener('loadeddata', playImmediately)
       player.pause()
     }
-  }, [index, item.kind])
+  }, [index, item.kind, mobile])
   const onKeyDown = event => {
     if (event.target.closest('input, video') || event.currentTarget.querySelector('.viewer-media[data-pannable="true"]') || event.altKey || event.ctrlKey || event.metaKey) return
     if (event.key === 'ArrowLeft') { event.preventDefault(); change(-1) }
@@ -172,7 +182,7 @@ function MediaViewer({ viewer, onClose }) {
   return <Dialog className="media-lightbox" labelId="media-viewer-title" onClose={onClose} onKeyDown={onKeyDown} showClose={false} animated>{({ requestClose }) => <>
     <div className="viewer-header"><h2 id="media-viewer-title" title={item.title} aria-live="polite">{item.title}</h2><button className="viewer-close" onClick={requestClose} aria-label="关闭大图预览" autoFocus>关闭 <span aria-hidden="true">×</span></button></div>
     {item.src && !failed && item.kind !== 'video' ? <ZoomableImage key={item.id} item={item} onError={() => setFailed(true)} /> : <div className="viewer-media" key={item.id} tabIndex={0} aria-label="作品预览">
-      {!item.src || failed ? item.kind === 'long' && !failed ? <LongPlaceholder item={item} /> : <Placeholder item={item} index={index} large failed={failed} /> : <video ref={playerRef} src={playbackSrc} poster={playbackPoster || undefined} controls autoPlay playsInline preload="auto" onError={() => setFailed(true)} />}
+      {!item.src || failed ? item.kind === 'long' && !failed ? <LongPlaceholder item={item} /> : <Placeholder item={item} index={index} large failed={failed} /> : <video ref={attachPlayer} src={playbackSrc} poster={playbackPoster || undefined} controls autoPlay playsInline preload="auto" onError={() => setFailed(true)} />}
     </div>}
   </>}</Dialog>
 }
@@ -208,7 +218,9 @@ export default function WorkGallery({ reduced }) {
     if (isMobilePreviewDevice()) {
       if (items[index]?.kind !== 'video') return
       const videos = items.filter(item => item.kind === 'video')
-      setViewer({ items: videos, index: videos.indexOf(items[index]), title })
+      // Mount and request playback within this tap. Waiting for a network event
+      // can lose the user activation required by an embedded phone browser.
+      flushSync(() => setViewer({ items: videos, index: videos.indexOf(items[index]), title }))
       return
     }
     setViewer({ items, index, title })

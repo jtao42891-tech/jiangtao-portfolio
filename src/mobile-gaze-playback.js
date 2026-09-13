@@ -1,15 +1,18 @@
-// Share one small download between the hero and footer, below artwork priority.
-export function createMobileGazeSourceLoader({ fetchVideo = (...args) => fetch(...args), createURL = blob => URL.createObjectURL(blob) } = {}) {
+export const MOBILE_GAZE_ANIMATION_SRC = '/footer-mobile-2b91be58.webp'
+
+// Animated images do not use video.play() or require a user-activation gesture.
+// Share their one small download between hero/footer, below artwork priority.
+export function createMobileGazeSourceLoader({ fetchImage = (...args) => fetch(...args), createURL = blob => URL.createObjectURL(blob) } = {}) {
   let source
   return () => {
-    source ||= fetchVideo('/footer-mobile.mp4', { priority: 'low' })
+    source ||= fetchImage(MOBILE_GAZE_ANIMATION_SRC, { priority: 'low' })
       .then(response => {
         if (!response.ok) throw new Error('Mobile character unavailable')
         return response.blob()
       })
       .then(createURL)
       .catch(error => { source = null; throw error })
-    // The single object URL is reused for this page's lifetime (about 290 KB).
+    // The single object URL is reused for this page's lifetime.
     return source
   }
 }
@@ -47,7 +50,7 @@ export function deferMobileGazeLoad(callback, { windowTarget = window, documentT
       image.addEventListener('error', settle, { once: true })
     })
     // A stalled image must not prevent animation forever; even then the shared
-    // video request stays low priority and never blocks image rendering.
+    // animation request stays low priority and never blocks image rendering.
     timer = windowTarget.setTimeout(schedule, 4000)
   }, 300)
   return () => {
@@ -58,82 +61,50 @@ export function deferMobileGazeLoad(callback, { windowTarget = window, documentT
   }
 }
 
-export function createMobileGazePlayback({ video, showVideo, showPoster, documentTarget = document,
+export function createMobileGazeAnimation({ image, documentTarget = document,
   defer = deferMobileGazeLoad, loadSource = loadMobileGazeSource }) {
   let active = false
   let disposed = false
   let queued = null
   let loading = false
-  let loaded = false
-  let playing = false
-  let playAttempt = 0
-  let blocked = false
-  const play = () => {
-    if (disposed || !active || !loaded || playing || !video.paused || documentTarget.hidden) return
-    playing = true
-    const attempt = ++playAttempt
-    // Set these before play(), including the reflected inline/muted attributes
-    // required by mobile WebKit. No sound or touch-following interaction.
-    video.muted = video.defaultMuted = video.playsInline = video.loop = true
-    video.setAttribute('muted', '')
-    video.setAttribute('playsinline', '')
-    Promise.resolve(video.play()).then(() => {
-      if (attempt !== playAttempt) return
-      playing = false
-      blocked = false
-      if (disposed || !active || documentTarget.hidden) video.pause()
-    }).catch(() => {
-      if (attempt !== playAttempt) return
-      playing = false
-      if (!disposed && active) { blocked = true; showPoster() }
-    })
+  let source = null
+  const poster = image.getAttribute('src') || '/footer-poster.jpg'
+  const show = src => {
+    if (image.getAttribute('src') !== src) image.src = src
   }
-  const frameReady = () => {
-    if (!disposed && active && !documentTarget.hidden) showVideo()
-    else video.pause()
+  const animate = () => {
+    if (!disposed && active && source && !documentTarget.hidden) show(source)
   }
-  const retry = () => { if (blocked) play() }
-  const error = () => { if (!disposed) showPoster() }
+  const error = () => { if (!disposed && image.getAttribute('src') === source) show(poster) }
   const setActive = next => {
     active = next && !disposed
     if (!active) {
       queued?.(); queued = null
-      playAttempt++
-      playing = false
-      video.pause()
+      // Detach the animated image offscreen/in the background to stop decoding.
+      show(poster)
       return
     }
-    if (loaded) { play(); return }
+    if (source) { animate(); return }
     if (queued || loading) return
     queued = defer(() => {
       queued = null
       if (disposed || !active || documentTarget.hidden) return
       loading = true
-      loadSource().then(source => {
+      loadSource().then(url => {
         loading = false
         if (disposed) return
-        loaded = true
-        video.preload = 'none'
-        video.src = source
-        play()
-      }).catch(() => { loading = false; if (!disposed) showPoster() })
+        source = url
+        animate()
+      }).catch(() => { loading = false; if (!disposed) show(poster) })
     })
   }
-  video.addEventListener('playing', frameReady)
-  video.addEventListener('canplay', play)
-  video.addEventListener('error', error)
-  // Some phones block even muted autoplay in low-power mode. A normal page
-  // gesture retries it; the character itself never needs a second click.
-  documentTarget.addEventListener('pointerup', retry, { passive: true })
+  image.addEventListener('error', error)
   return {
     setActive,
     dispose() {
       disposed = true
       setActive(false)
-      video.removeEventListener('playing', frameReady)
-      video.removeEventListener('canplay', play)
-      video.removeEventListener('error', error)
-      documentTarget.removeEventListener('pointerup', retry)
+      image.removeEventListener('error', error)
     },
   }
 }

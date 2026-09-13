@@ -19,6 +19,9 @@
 /footer-mobile.mp4
   Cache-Control: public, max-age=3600
 
+/footer-mobile-2b91be58.webp
+  Cache-Control: public, max-age=31536000, immutable
+
 /footer-desktop.mp4
   Cache-Control: public, max-age=3600
 

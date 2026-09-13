@@ -1,13 +1,14 @@
 import { useEffect, useRef } from 'react'
 import { profile } from '../content'
 import { timeForAngle } from '../gaze-utils'
-import { createMobileGazePlayback } from '../mobile-gaze-playback'
+import { createMobileGazeAnimation } from '../mobile-gaze-playback'
 import RevealText from './RevealText'
 import './studio-footer.css'
 
 export function GazeBackground({ className = 'studio-background', priority = false }) {
   const containerRef = useRef(null)
   const videoRef = useRef(null)
+  const posterRef = useRef(null)
   useEffect(() => {
     const video = videoRef.current
     let frame = 0
@@ -75,7 +76,13 @@ export function GazeBackground({ className = 'studio-background', priority = fal
       if (mobile.matches) {
         if (!mobilePlayback) {
           requestedSource = ''
-          mobilePlayback = createMobileGazePlayback({ video, showVideo, showPoster })
+          video.pause()
+          if (video.getAttribute('src')) {
+            video.removeAttribute('src')
+            video.load()
+          }
+          showPoster()
+          mobilePlayback = createMobileGazeAnimation({ image: posterRef.current })
         }
         mobilePlayback.setActive(visible && !document.hidden && !reducedMotion.matches)
         if (reducedMotion.matches) showPoster()
@@ -150,7 +157,7 @@ export function GazeBackground({ className = 'studio-background', priority = fal
     }
   }, [])
   return <div ref={containerRef} className={className} aria-hidden="true">
-    <img className="gaze-poster" src="/footer-poster.jpg" alt="" width="1280" height="720" loading={priority ? 'eager' : 'lazy'} fetchPriority={priority ? 'high' : 'low'} decoding="async" />
+    <img ref={posterRef} className="gaze-poster" src="/footer-poster.jpg" alt="" width="1280" height="720" loading={priority ? 'eager' : 'lazy'} fetchPriority={priority ? 'high' : 'low'} decoding="async" />
     <video className="gaze-video" ref={videoRef} muted playsInline preload="none" poster="/footer-poster.jpg" />
   </div>
 }
