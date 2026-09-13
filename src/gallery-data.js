@@ -11,7 +11,7 @@ const slots = (prefix, title, count, kind, ratio) => Array.from({ length: count 
 
 export const gallerySections = [
   {
-    id: 'creative', number: '01', title: '创意设计', english: 'Creative design.',
+    id: 'creative', number: '01', title: 'AI创意设计', english: 'AI Creative Design.',
     description: '让想象落地，让视觉发声。', layout: 'creative',
     rows: [
       {
