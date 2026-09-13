@@ -54,7 +54,7 @@ function Header() {
 
 function Hero() {
   return <section id="home" className="hero friendly-hero" aria-labelledby="hero-title">
-    <GazeBackground className="hero-character" />
+    <GazeBackground className="hero-character" priority />
     <div className="shell hero-inner" data-hero-reveal>
       <div className="hero-eyebrow">a little about me.</div>
       <div className="hero-main">
@@ -69,7 +69,7 @@ function Hero() {
 }
 
 function ExperienceItem({ item, initiallyOpen = false }) {
-  const [open, setOpen] = useState(initiallyOpen)
+  const [open, setOpen] = useState(() => initiallyOpen && typeof window !== 'undefined' && window.matchMedia('(min-width: 701px)').matches)
   return <details className="experience-item" open={open}>
     <summary onClick={event => { event.preventDefault(); setOpen(current => !current) }}>
       <span className="experience-period">{item.period}</span>

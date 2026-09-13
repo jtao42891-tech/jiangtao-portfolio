@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
+import { previewImageProps } from '../media-preview'
 import './packaging-reveal.css'
 
 const TRANSITION_DURATION = 1400
@@ -76,10 +77,10 @@ function PackagingRevealCard({ item, reduced, onOpen }) {
     <button className="packaging-reveal-stage" style={{ aspectRatio: metrics.panelAspect, '--packaging-render-offset': metrics.renderOffset }} type="button" onClick={onOpen} aria-haspopup="dialog" aria-label={`放大查看${item.title}，${stateText}`}>
       {failed ? <div className="packaging-reveal-error">图片暂时无法加载</div> : <>
         <div className="packaging-reveal-layer packaging-reveal-draft" aria-hidden={rendered}>
-          <img src={item.src} alt={item.draftAlt || `${item.title}包装线稿图`} loading="lazy" decoding="async" draggable="false" onError={() => setFailed(true)} />
+          <img {...previewImageProps(item.src)} alt={item.draftAlt || `${item.title}包装线稿图`} loading="lazy" decoding="async" draggable="false" onError={() => setFailed(true)} />
         </div>
         <div className="packaging-reveal-layer packaging-reveal-render" aria-hidden={!rendered}>
-          <img src={item.src} alt={item.renderAlt || `${item.title}3D效果图`} loading="lazy" decoding="async" draggable="false" onError={() => setFailed(true)} />
+          <img {...previewImageProps(item.src)} alt={item.renderAlt || `${item.title}3D效果图`} loading="lazy" decoding="async" draggable="false" onError={() => setFailed(true)} />
         </div>
         {transitioning && <Suspense fallback={null}><ShapeBlur className="packaging-shape-blur" duration={TRANSITION_DURATION - 50} pixelRatioProp={typeof window === 'undefined' ? 1 : window.devicePixelRatio || 1} /></Suspense>}
       </>}

@@ -1,0 +1,635 @@
+{
+  "/works/creative-square/01-ultra-basketball.jpg": {
+    "src": "/media/previews/works-creative-square-01-ultra-basketball-800.webp",
+    "srcSet": "/media/previews/works-creative-square-01-ultra-basketball-640.webp 640w, /media/previews/works-creative-square-01-ultra-basketball-800.webp 800w",
+    "width": 800,
+    "height": 800
+  },
+  "/works/creative-square/02-iron-clouds.png": {
+    "src": "/media/previews/works-creative-square-02-iron-clouds-800.webp",
+    "srcSet": "/media/previews/works-creative-square-02-iron-clouds-640.webp 640w, /media/previews/works-creative-square-02-iron-clouds-800.webp 800w",
+    "width": 800,
+    "height": 800
+  },
+  "/works/creative-square/03-ultra-skateboard.jpg": {
+    "src": "/media/previews/works-creative-square-03-ultra-skateboard-800.webp",
+    "srcSet": "/media/previews/works-creative-square-03-ultra-skateboard-640.webp 640w, /media/previews/works-creative-square-03-ultra-skateboard-800.webp 800w",
+    "width": 800,
+    "height": 800
+  },
+  "/works/creative-square/04-fish-oil-arctic.jpg": {
+    "src": "/media/previews/works-creative-square-04-fish-oil-arctic-1063.webp",
+    "srcSet": "/media/previews/works-creative-square-04-fish-oil-arctic-640.webp 640w, /media/previews/works-creative-square-04-fish-oil-arctic-1063.webp 1063w",
+    "width": 1063,
+    "height": 1063
+  },
+  "/works/creative-square/05-fish-oil-ocean.jpg": {
+    "src": "/media/previews/works-creative-square-05-fish-oil-ocean-800.webp",
+    "srcSet": "/media/previews/works-creative-square-05-fish-oil-ocean-640.webp 640w, /media/previews/works-creative-square-05-fish-oil-ocean-800.webp 800w",
+    "width": 800,
+    "height": 800
+  },
+  "/works/creative-square/06-calcium-womens-day.jpg": {
+    "src": "/media/previews/works-creative-square-06-calcium-womens-day-1200.webp",
+    "srcSet": "/media/previews/works-creative-square-06-calcium-womens-day-640.webp 640w, /media/previews/works-creative-square-06-calcium-womens-day-1200.webp 1200w",
+    "width": 1200,
+    "height": 1200
+  },
+  "/works/creative-square/07-fish-oil-mini.png": {
+    "src": "/media/previews/works-creative-square-07-fish-oil-mini-800.webp",
+    "srcSet": "/media/previews/works-creative-square-07-fish-oil-mini-640.webp 640w, /media/previews/works-creative-square-07-fish-oil-mini-800.webp 800w",
+    "width": 800,
+    "height": 800
+  },
+  "/works/creative-square/08-probiotics-child.png": {
+    "src": "/media/previews/works-creative-square-08-probiotics-child-800.webp",
+    "srcSet": "/media/previews/works-creative-square-08-probiotics-child-640.webp 640w, /media/previews/works-creative-square-08-probiotics-child-800.webp 800w",
+    "width": 800,
+    "height": 800
+  },
+  "/works/creative-square/09-probiotics-summer.png": {
+    "src": "/media/previews/works-creative-square-09-probiotics-summer-800.webp",
+    "srcSet": "/media/previews/works-creative-square-09-probiotics-summer-640.webp 640w, /media/previews/works-creative-square-09-probiotics-summer-800.webp 800w",
+    "width": 800,
+    "height": 800
+  },
+  "/works/creative-square/10-beauty-fish-oil.png": {
+    "src": "/media/previews/works-creative-square-10-beauty-fish-oil-800.webp",
+    "srcSet": "/media/previews/works-creative-square-10-beauty-fish-oil-640.webp 640w, /media/previews/works-creative-square-10-beauty-fish-oil-800.webp 800w",
+    "width": 800,
+    "height": 800
+  },
+  "/works/creative-square/11-iron-kids.jpg": {
+    "src": "/media/previews/works-creative-square-11-iron-kids-800.webp",
+    "srcSet": "/media/previews/works-creative-square-11-iron-kids-640.webp 640w, /media/previews/works-creative-square-11-iron-kids-800.webp 800w",
+    "width": 800,
+    "height": 800
+  },
+  "/works/creative-square/12-schubert-gold.jpg": {
+    "src": "/media/previews/works-creative-square-12-schubert-gold-800.webp",
+    "srcSet": "/media/previews/works-creative-square-12-schubert-gold-640.webp 640w, /media/previews/works-creative-square-12-schubert-gold-800.webp 800w",
+    "width": 800,
+    "height": 800
+  },
+  "/works/creative-square/13-schubert-active.jpg": {
+    "src": "/media/previews/works-creative-square-13-schubert-active-800.webp",
+    "srcSet": "/media/previews/works-creative-square-13-schubert-active-640.webp 640w, /media/previews/works-creative-square-13-schubert-active-800.webp 800w",
+    "width": 800,
+    "height": 800
+  },
+  "/works/creative-square/14-growth-collagen.jpg": {
+    "src": "/media/previews/works-creative-square-14-growth-collagen-800.webp",
+    "srcSet": "/media/previews/works-creative-square-14-growth-collagen-640.webp 640w, /media/previews/works-creative-square-14-growth-collagen-800.webp 800w",
+    "width": 800,
+    "height": 800
+  },
+  "/works/creative-square/15-iron-new-year.jpg": {
+    "src": "/media/previews/works-creative-square-15-iron-new-year-800.webp",
+    "srcSet": "/media/previews/works-creative-square-15-iron-new-year-640.webp 640w, /media/previews/works-creative-square-15-iron-new-year-800.webp 800w",
+    "width": 800,
+    "height": 800
+  },
+  "/works/creative-square/16-mini-capsule.jpg": {
+    "src": "/media/previews/works-creative-square-16-mini-capsule-1254.webp",
+    "srcSet": "/media/previews/works-creative-square-16-mini-capsule-640.webp 640w, /media/previews/works-creative-square-16-mini-capsule-1254.webp 1254w",
+    "width": 1254,
+    "height": 1254
+  },
+  "/works/creative-square/17-calcium-maternity.jpg": {
+    "src": "/media/previews/works-creative-square-17-calcium-maternity-800.webp",
+    "srcSet": "/media/previews/works-creative-square-17-calcium-maternity-640.webp 640w, /media/previews/works-creative-square-17-calcium-maternity-800.webp 800w",
+    "width": 800,
+    "height": 800
+  },
+  "/works/creative-square/18-iron-maternity.jpg": {
+    "src": "/media/previews/works-creative-square-18-iron-maternity-1000.webp",
+    "srcSet": "/media/previews/works-creative-square-18-iron-maternity-640.webp 640w, /media/previews/works-creative-square-18-iron-maternity-1000.webp 1000w",
+    "width": 1000,
+    "height": 1000
+  },
+  "/works/creative-portrait/01-racing-mountain.png": {
+    "src": "/media/previews/works-creative-portrait-01-racing-mountain-915.webp",
+    "srcSet": "/media/previews/works-creative-portrait-01-racing-mountain-640.webp 640w, /media/previews/works-creative-portrait-01-racing-mountain-915.webp 915w",
+    "width": 915,
+    "height": 1141
+  },
+  "/works/creative-portrait/02-calcium-child.jpg": {
+    "src": "/media/previews/works-creative-portrait-02-calcium-child-750.webp",
+    "srcSet": "/media/previews/works-creative-portrait-02-calcium-child-640.webp 640w, /media/previews/works-creative-portrait-02-calcium-child-750.webp 750w",
+    "width": 750,
+    "height": 1052
+  },
+  "/works/creative-portrait/03-calcium-active.jpg": {
+    "src": "/media/previews/works-creative-portrait-03-calcium-active-750.webp",
+    "srcSet": "/media/previews/works-creative-portrait-03-calcium-active-640.webp 640w, /media/previews/works-creative-portrait-03-calcium-active-750.webp 750w",
+    "width": 750,
+    "height": 1052
+  },
+  "/works/creative-portrait/04-schubert-active.jpg": {
+    "src": "/media/previews/works-creative-portrait-04-schubert-active-750.webp",
+    "srcSet": "/media/previews/works-creative-portrait-04-schubert-active-640.webp 640w, /media/previews/works-creative-portrait-04-schubert-active-750.webp 750w",
+    "width": 750,
+    "height": 1000
+  },
+  "/works/creative-portrait/05-beauty-fish-oil.jpg": {
+    "src": "/media/previews/works-creative-portrait-05-beauty-fish-oil-750.webp",
+    "srcSet": "/media/previews/works-creative-portrait-05-beauty-fish-oil-640.webp 640w, /media/previews/works-creative-portrait-05-beauty-fish-oil-750.webp 750w",
+    "width": 750,
+    "height": 1000
+  },
+  "/works/creative-portrait/06-fish-oil-gold.jpg": {
+    "src": "/media/previews/works-creative-portrait-06-fish-oil-gold-750.webp",
+    "srcSet": "/media/previews/works-creative-portrait-06-fish-oil-gold-640.webp 640w, /media/previews/works-creative-portrait-06-fish-oil-gold-750.webp 750w",
+    "width": 750,
+    "height": 1000
+  },
+  "/works/creative-portrait/07-fish-oil-crown.jpg": {
+    "src": "/media/previews/works-creative-portrait-07-fish-oil-crown-750.webp",
+    "srcSet": "/media/previews/works-creative-portrait-07-fish-oil-crown-640.webp 640w, /media/previews/works-creative-portrait-07-fish-oil-crown-750.webp 750w",
+    "width": 750,
+    "height": 1000
+  },
+  "/works/creative-portrait/08-football-character.png": {
+    "src": "/media/previews/works-creative-portrait-08-football-character-1200.webp",
+    "srcSet": "/media/previews/works-creative-portrait-08-football-character-640.webp 640w, /media/previews/works-creative-portrait-08-football-character-1200.webp 1200w",
+    "width": 1200,
+    "height": 1600
+  },
+  "/works/creative-portrait/09-racing-cream.jpg": {
+    "src": "/media/previews/works-creative-portrait-09-racing-cream-1280.webp",
+    "srcSet": "/media/previews/works-creative-portrait-09-racing-cream-640.webp 640w, /media/previews/works-creative-portrait-09-racing-cream-1280.webp 1280w",
+    "width": 1500,
+    "height": 2000
+  },
+  "/works/creative-portrait/10-fish-oil-press.jpg": {
+    "src": "/media/previews/works-creative-portrait-10-fish-oil-press-1280.webp",
+    "srcSet": "/media/previews/works-creative-portrait-10-fish-oil-press-640.webp 640w, /media/previews/works-creative-portrait-10-fish-oil-press-1280.webp 1280w",
+    "width": 1440,
+    "height": 1920
+  },
+  "/works/creative-portrait/11-iron-vessels.jpg": {
+    "src": "/media/previews/works-creative-portrait-11-iron-vessels-750.webp",
+    "srcSet": "/media/previews/works-creative-portrait-11-iron-vessels-640.webp 640w, /media/previews/works-creative-portrait-11-iron-vessels-750.webp 750w",
+    "width": 750,
+    "height": 1000
+  },
+  "/works/creative-portrait/12-racing-experience.jpg": {
+    "src": "/media/previews/works-creative-portrait-12-racing-experience-1280.webp",
+    "srcSet": "/media/previews/works-creative-portrait-12-racing-experience-640.webp 640w, /media/previews/works-creative-portrait-12-racing-experience-1280.webp 1280w",
+    "width": 4724,
+    "height": 7087
+  },
+  "/works/mind-laugh.png": {
+    "src": "/media/previews/works-mind-laugh-1021.webp",
+    "srcSet": "/media/previews/works-mind-laugh-640.webp 640w, /media/previews/works-mind-laugh-1021.webp 1021w",
+    "width": 1021,
+    "height": 1373
+  },
+  "/works/mind-magic.png": {
+    "src": "/media/previews/works-mind-magic-1266.webp",
+    "srcSet": "/media/previews/works-mind-magic-640.webp 640w, /media/previews/works-mind-magic-1266.webp 1266w",
+    "width": 1266,
+    "height": 1507
+  },
+  "/works/mind-like.png": {
+    "src": "/media/previews/works-mind-like-1280.webp",
+    "srcSet": "/media/previews/works-mind-like-640.webp 640w, /media/previews/works-mind-like-1280.webp 1280w",
+    "width": 1483,
+    "height": 1462
+  },
+  "/works/mind-hello.png": {
+    "src": "/media/previews/works-mind-hello-1280.webp",
+    "srcSet": "/media/previews/works-mind-hello-640.webp 640w, /media/previews/works-mind-hello-1280.webp 1280w",
+    "width": 1386,
+    "height": 1445
+  },
+  "/works/marketing-main/01-fish-oil-tmall.jpg": {
+    "src": "/media/previews/works-marketing-main-01-fish-oil-tmall-800.webp",
+    "srcSet": "/media/previews/works-marketing-main-01-fish-oil-tmall-640.webp 640w, /media/previews/works-marketing-main-01-fish-oil-tmall-800.webp 800w",
+    "width": 800,
+    "height": 800
+  },
+  "/works/marketing-main/02-fish-oil-year-end.jpg": {
+    "src": "/media/previews/works-marketing-main-02-fish-oil-year-end-750.webp",
+    "srcSet": "/media/previews/works-marketing-main-02-fish-oil-year-end-640.webp 640w, /media/previews/works-marketing-main-02-fish-oil-year-end-750.webp 750w",
+    "width": 750,
+    "height": 750
+  },
+  "/works/marketing-main/03-ferrolip-forte.jpg": {
+    "src": "/media/previews/works-marketing-main-03-ferrolip-forte-800.webp",
+    "srcSet": "/media/previews/works-marketing-main-03-ferrolip-forte-640.webp 640w, /media/previews/works-marketing-main-03-ferrolip-forte-800.webp 800w",
+    "width": 800,
+    "height": 800
+  },
+  "/works/marketing-main/04-mini-fish-oil-jd.jpg": {
+    "src": "/media/previews/works-marketing-main-04-mini-fish-oil-jd-800.webp",
+    "srcSet": "/media/previews/works-marketing-main-04-mini-fish-oil-jd-640.webp 640w, /media/previews/works-marketing-main-04-mini-fish-oil-jd-800.webp 800w",
+    "width": 800,
+    "height": 800
+  },
+  "/works/marketing-main/05-made-heart-5l.jpg": {
+    "src": "/media/previews/works-marketing-main-05-made-heart-5l-800.webp",
+    "srcSet": "/media/previews/works-marketing-main-05-made-heart-5l-640.webp 640w, /media/previews/works-marketing-main-05-made-heart-5l-800.webp 800w",
+    "width": 800,
+    "height": 800
+  },
+  "/works/marketing-main/06-made-heart-7l.jpg": {
+    "src": "/media/previews/works-marketing-main-06-made-heart-7l-800.webp",
+    "srcSet": "/media/previews/works-marketing-main-06-made-heart-7l-640.webp 640w, /media/previews/works-marketing-main-06-made-heart-7l-800.webp 800w",
+    "width": 800,
+    "height": 800
+  },
+  "/works/livestream-design/01-calcium-spring.jpg": {
+    "src": "/media/previews/works-livestream-design-01-calcium-spring-1080.webp",
+    "srcSet": "/media/previews/works-livestream-design-01-calcium-spring-640.webp 640w, /media/previews/works-livestream-design-01-calcium-spring-1080.webp 1080w",
+    "width": 1080,
+    "height": 1920
+  },
+  "/works/livestream-design/02-calcium-new-year.jpg": {
+    "src": "/media/previews/works-livestream-design-02-calcium-new-year-1080.webp",
+    "srcSet": "/media/previews/works-livestream-design-02-calcium-new-year-640.webp 640w, /media/previews/works-livestream-design-02-calcium-new-year-1080.webp 1080w",
+    "width": 1080,
+    "height": 1920
+  },
+  "/works/content-optimization/01-probiotic-awards.jpg": {
+    "src": "/media/previews/works-content-optimization-01-probiotic-awards-790.webp",
+    "srcSet": "/media/previews/works-content-optimization-01-probiotic-awards-640.webp 640w, /media/previews/works-content-optimization-01-probiotic-awards-790.webp 790w",
+    "width": 790,
+    "height": 1624
+  },
+  "/works/content-optimization/02-fish-oil-arctic.jpg": {
+    "src": "/media/previews/works-content-optimization-02-fish-oil-arctic-1200.webp",
+    "srcSet": "/media/previews/works-content-optimization-02-fish-oil-arctic-640.webp 640w, /media/previews/works-content-optimization-02-fish-oil-arctic-1200.webp 1200w",
+    "width": 1200,
+    "height": 1600
+  },
+  "/works/content-optimization/03-fish-oil-nutrition.png": {
+    "src": "/media/previews/works-content-optimization-03-fish-oil-nutrition-790.webp",
+    "srcSet": "/media/previews/works-content-optimization-03-fish-oil-nutrition-640.webp 640w, /media/previews/works-content-optimization-03-fish-oil-nutrition-790.webp 790w",
+    "width": 790,
+    "height": 1333
+  },
+  "/works/exhibition/01-uga-vitafoods-asia.jpg": {
+    "src": "/media/previews/works-exhibition-01-uga-vitafoods-asia-1280.webp",
+    "srcSet": "/media/previews/works-exhibition-01-uga-vitafoods-asia-640.webp 640w, /media/previews/works-exhibition-01-uga-vitafoods-asia-1280.webp 1280w",
+    "width": 3508,
+    "height": 2058
+  },
+  "/works/exhibition/02-uga-vitafoods-asia.jpg": {
+    "src": "/media/previews/works-exhibition-02-uga-vitafoods-asia-1280.webp",
+    "srcSet": "/media/previews/works-exhibition-02-uga-vitafoods-asia-640.webp 640w, /media/previews/works-exhibition-02-uga-vitafoods-asia-1280.webp 1280w",
+    "width": 4961,
+    "height": 2910
+  },
+  "/works/exhibition/03-sunseasons-vitafoods.jpg": {
+    "src": "/media/previews/works-exhibition-03-sunseasons-vitafoods-1280.webp",
+    "srcSet": "/media/previews/works-exhibition-03-sunseasons-vitafoods-640.webp 640w, /media/previews/works-exhibition-03-sunseasons-vitafoods-1280.webp 1280w",
+    "width": 12500,
+    "height": 6942
+  },
+  "/works/exhibition/04-sunseasons-vitafoods.jpg": {
+    "src": "/media/previews/works-exhibition-04-sunseasons-vitafoods-1280.webp",
+    "srcSet": "/media/previews/works-exhibition-04-sunseasons-vitafoods-640.webp 640w, /media/previews/works-exhibition-04-sunseasons-vitafoods-1280.webp 1280w",
+    "width": 12500,
+    "height": 6942
+  },
+  "/works/logo-design/01-meizhili-logo-construction.jpg": {
+    "src": "/media/previews/works-logo-design-01-meizhili-logo-construction-1280.webp",
+    "srcSet": "/media/previews/works-logo-design-01-meizhili-logo-construction-640.webp 640w, /media/previews/works-logo-design-01-meizhili-logo-construction-1280.webp 1280w",
+    "width": 4096,
+    "height": 2304
+  },
+  "/works/logo-design/02-meizhili-logo-application.png": {
+    "src": "/media/previews/works-logo-design-02-meizhili-logo-application-1280.webp",
+    "srcSet": "/media/previews/works-logo-design-02-meizhili-logo-application-640.webp 640w, /media/previews/works-logo-design-02-meizhili-logo-application-1280.webp 1280w",
+    "width": 4096,
+    "height": 2304
+  },
+  "/works/logo-design/03-widar-logo-construction.jpg": {
+    "src": "/media/previews/works-logo-design-03-widar-logo-construction-1280.webp",
+    "srcSet": "/media/previews/works-logo-design-03-widar-logo-construction-640.webp 640w, /media/previews/works-logo-design-03-widar-logo-construction-1280.webp 1280w",
+    "width": 4096,
+    "height": 2304
+  },
+  "/works/logo-design/04-widar-logo-application.png": {
+    "src": "/media/previews/works-logo-design-04-widar-logo-application-1280.webp",
+    "srcSet": "/media/previews/works-logo-design-04-widar-logo-application-640.webp 640w, /media/previews/works-logo-design-04-widar-logo-application-1280.webp 1280w",
+    "width": 1672,
+    "height": 941
+  },
+  "/works/packaging-design/01-meizhili-blue-green-haircare.jpg": {
+    "src": "/media/previews/works-packaging-design-01-meizhili-blue-green-haircare-1280.webp",
+    "srcSet": "/media/previews/works-packaging-design-01-meizhili-blue-green-haircare-640.webp 640w, /media/previews/works-packaging-design-01-meizhili-blue-green-haircare-1280.webp 1280w",
+    "width": 5729,
+    "height": 8023
+  },
+  "/works/packaging-design/02-meizhili-green-gold-haircare.jpg": {
+    "src": "/media/previews/works-packaging-design-02-meizhili-green-gold-haircare-1280.webp",
+    "srcSet": "/media/previews/works-packaging-design-02-meizhili-green-gold-haircare-640.webp 640w, /media/previews/works-packaging-design-02-meizhili-green-gold-haircare-1280.webp 1280w",
+    "width": 5729,
+    "height": 8018
+  },
+  "/works/china-gt-racing/01-racing-rear-view.jpg": {
+    "src": "/media/previews/works-china-gt-racing-01-racing-rear-view-1280.webp",
+    "srcSet": "/media/previews/works-china-gt-racing-01-racing-rear-view-640.webp 640w, /media/previews/works-china-gt-racing-01-racing-rear-view-1280.webp 1280w",
+    "width": 5504,
+    "height": 3072
+  },
+  "/works/china-gt-racing/02-racing-multi-view.jpg": {
+    "src": "/media/previews/works-china-gt-racing-02-racing-multi-view-1280.webp",
+    "srcSet": "/media/previews/works-china-gt-racing-02-racing-multi-view-640.webp 640w, /media/previews/works-china-gt-racing-02-racing-multi-view-1280.webp 1280w",
+    "width": 5504,
+    "height": 3072
+  },
+  "/works/china-gt-racing/03-racing-left-front-view.jpg": {
+    "src": "/media/previews/works-china-gt-racing-03-racing-left-front-view-1280.webp",
+    "srcSet": "/media/previews/works-china-gt-racing-03-racing-left-front-view-640.webp 640w, /media/previews/works-china-gt-racing-03-racing-left-front-view-1280.webp 1280w",
+    "width": 5504,
+    "height": 3072
+  },
+  "/works/china-gt-racing/04-racing-right-front-view.jpg": {
+    "src": "/media/previews/works-china-gt-racing-04-racing-right-front-view-1280.webp",
+    "srcSet": "/media/previews/works-china-gt-racing-04-racing-right-front-view-640.webp 640w, /media/previews/works-china-gt-racing-04-racing-right-front-view-1280.webp 1280w",
+    "width": 5504,
+    "height": 3072
+  },
+  "/works/homepage/01-double-eleven-medical.png": {
+    "src": "/media/previews/works-homepage-01-double-eleven-medical-1200.webp",
+    "srcSet": "/media/previews/works-homepage-01-double-eleven-medical-640.webp 640w, /media/previews/works-homepage-01-double-eleven-medical-1200.webp 1200w",
+    "width": 1200,
+    "height": 5846
+  },
+  "/works/homepage/02-calcium-womens-day.jpg": {
+    "src": "/media/previews/works-homepage-02-calcium-womens-day-540.webp",
+    "srcSet": "/media/previews/works-homepage-02-calcium-womens-day-360.webp 360w, /media/previews/works-homepage-02-calcium-womens-day-540.webp 540w",
+    "width": 1200,
+    "height": 6381
+  },
+  "/works/homepage/03-calcium-jd-618.jpg": {
+    "src": "/media/previews/works-homepage-03-calcium-jd-618-1200.webp",
+    "srcSet": "/media/previews/works-homepage-03-calcium-jd-618-640.webp 640w, /media/previews/works-homepage-03-calcium-jd-618-1200.webp 1200w",
+    "width": 1200,
+    "height": 5967
+  },
+  "/works/product-manual/inositol-01.png": {
+    "src": "/media/previews/works-product-manual-inositol-01-1280.webp",
+    "srcSet": "/media/previews/works-product-manual-inositol-01-640.webp 640w, /media/previews/works-product-manual-inositol-01-1280.webp 1280w",
+    "width": 6000,
+    "height": 3375
+  },
+  "/works/product-manual/inositol-02.png": {
+    "src": "/media/previews/works-product-manual-inositol-02-1280.webp",
+    "srcSet": "/media/previews/works-product-manual-inositol-02-640.webp 640w, /media/previews/works-product-manual-inositol-02-1280.webp 1280w",
+    "width": 6000,
+    "height": 3375
+  },
+  "/works/product-manual/inositol-03.png": {
+    "src": "/media/previews/works-product-manual-inositol-03-1280.webp",
+    "srcSet": "/media/previews/works-product-manual-inositol-03-640.webp 640w, /media/previews/works-product-manual-inositol-03-1280.webp 1280w",
+    "width": 6000,
+    "height": 3375
+  },
+  "/works/product-manual/inositol-04.png": {
+    "src": "/media/previews/works-product-manual-inositol-04-1280.webp",
+    "srcSet": "/media/previews/works-product-manual-inositol-04-640.webp 640w, /media/previews/works-product-manual-inositol-04-1280.webp 1280w",
+    "width": 6000,
+    "height": 3375
+  },
+  "/works/product-manual/inositol-05.png": {
+    "src": "/media/previews/works-product-manual-inositol-05-1280.webp",
+    "srcSet": "/media/previews/works-product-manual-inositol-05-640.webp 640w, /media/previews/works-product-manual-inositol-05-1280.webp 1280w",
+    "width": 6000,
+    "height": 3375
+  },
+  "/works/product-manual/inositol-06.png": {
+    "src": "/media/previews/works-product-manual-inositol-06-1280.webp",
+    "srcSet": "/media/previews/works-product-manual-inositol-06-640.webp 640w, /media/previews/works-product-manual-inositol-06-1280.webp 1280w",
+    "width": 6000,
+    "height": 3375
+  },
+  "/works/product-manual/inositol-07.png": {
+    "src": "/media/previews/works-product-manual-inositol-07-1280.webp",
+    "srcSet": "/media/previews/works-product-manual-inositol-07-640.webp 640w, /media/previews/works-product-manual-inositol-07-1280.webp 1280w",
+    "width": 6000,
+    "height": 3375
+  },
+  "/works/product-manual/inositol-08.png": {
+    "src": "/media/previews/works-product-manual-inositol-08-1280.webp",
+    "srcSet": "/media/previews/works-product-manual-inositol-08-640.webp 640w, /media/previews/works-product-manual-inositol-08-1280.webp 1280w",
+    "width": 6000,
+    "height": 3375
+  },
+  "/works/product-manual/inositol-09.png": {
+    "src": "/media/previews/works-product-manual-inositol-09-1280.webp",
+    "srcSet": "/media/previews/works-product-manual-inositol-09-640.webp 640w, /media/previews/works-product-manual-inositol-09-1280.webp 1280w",
+    "width": 6000,
+    "height": 3375
+  },
+  "/works/product-manual/inositol-11.png": {
+    "src": "/media/previews/works-product-manual-inositol-11-1280.webp",
+    "srcSet": "/media/previews/works-product-manual-inositol-11-640.webp 640w, /media/previews/works-product-manual-inositol-11-1280.webp 1280w",
+    "width": 6000,
+    "height": 3375
+  },
+  "/works/product-manual/inositol-12.png": {
+    "src": "/media/previews/works-product-manual-inositol-12-1280.webp",
+    "srcSet": "/media/previews/works-product-manual-inositol-12-640.webp 640w, /media/previews/works-product-manual-inositol-12-1280.webp 1280w",
+    "width": 6000,
+    "height": 3375
+  },
+  "/works/product-manual/inositol-25.png": {
+    "src": "/media/previews/works-product-manual-inositol-25-1280.webp",
+    "srcSet": "/media/previews/works-product-manual-inositol-25-640.webp 640w, /media/previews/works-product-manual-inositol-25-1280.webp 1280w",
+    "width": 6000,
+    "height": 3375
+  },
+  "/works/product-manual/inositol-28.png": {
+    "src": "/media/previews/works-product-manual-inositol-28-1280.webp",
+    "srcSet": "/media/previews/works-product-manual-inositol-28-640.webp 640w, /media/previews/works-product-manual-inositol-28-1280.webp 1280w",
+    "width": 6000,
+    "height": 3375
+  },
+  "/works/sunseasons-manual/sunseasons-01.png": {
+    "src": "/media/previews/works-sunseasons-manual-sunseasons-01-1280.webp",
+    "srcSet": "/media/previews/works-sunseasons-manual-sunseasons-01-640.webp 640w, /media/previews/works-sunseasons-manual-sunseasons-01-1280.webp 1280w",
+    "width": 8054,
+    "height": 4530
+  },
+  "/works/sunseasons-manual/sunseasons-02.png": {
+    "src": "/media/previews/works-sunseasons-manual-sunseasons-02-1280.webp",
+    "srcSet": "/media/previews/works-sunseasons-manual-sunseasons-02-640.webp 640w, /media/previews/works-sunseasons-manual-sunseasons-02-1280.webp 1280w",
+    "width": 8054,
+    "height": 4530
+  },
+  "/works/sunseasons-manual/sunseasons-03.png": {
+    "src": "/media/previews/works-sunseasons-manual-sunseasons-03-1280.webp",
+    "srcSet": "/media/previews/works-sunseasons-manual-sunseasons-03-640.webp 640w, /media/previews/works-sunseasons-manual-sunseasons-03-1280.webp 1280w",
+    "width": 8054,
+    "height": 4530
+  },
+  "/works/sunseasons-manual/sunseasons-05.png": {
+    "src": "/media/previews/works-sunseasons-manual-sunseasons-05-1280.webp",
+    "srcSet": "/media/previews/works-sunseasons-manual-sunseasons-05-640.webp 640w, /media/previews/works-sunseasons-manual-sunseasons-05-1280.webp 1280w",
+    "width": 8054,
+    "height": 4530
+  },
+  "/works/sunseasons-manual/sunseasons-06.png": {
+    "src": "/media/previews/works-sunseasons-manual-sunseasons-06-1280.webp",
+    "srcSet": "/media/previews/works-sunseasons-manual-sunseasons-06-640.webp 640w, /media/previews/works-sunseasons-manual-sunseasons-06-1280.webp 1280w",
+    "width": 8054,
+    "height": 4530
+  },
+  "/works/sunseasons-manual/sunseasons-07.png": {
+    "src": "/media/previews/works-sunseasons-manual-sunseasons-07-1280.webp",
+    "srcSet": "/media/previews/works-sunseasons-manual-sunseasons-07-640.webp 640w, /media/previews/works-sunseasons-manual-sunseasons-07-1280.webp 1280w",
+    "width": 8054,
+    "height": 4530
+  },
+  "/works/sunseasons-manual/sunseasons-08.png": {
+    "src": "/media/previews/works-sunseasons-manual-sunseasons-08-1280.webp",
+    "srcSet": "/media/previews/works-sunseasons-manual-sunseasons-08-640.webp 640w, /media/previews/works-sunseasons-manual-sunseasons-08-1280.webp 1280w",
+    "width": 8054,
+    "height": 4530
+  },
+  "/works/sunseasons-manual/sunseasons-09.png": {
+    "src": "/media/previews/works-sunseasons-manual-sunseasons-09-1280.webp",
+    "srcSet": "/media/previews/works-sunseasons-manual-sunseasons-09-640.webp 640w, /media/previews/works-sunseasons-manual-sunseasons-09-1280.webp 1280w",
+    "width": 8054,
+    "height": 4533
+  },
+  "/works/sunseasons-manual/sunseasons-13.png": {
+    "src": "/media/previews/works-sunseasons-manual-sunseasons-13-1280.webp",
+    "srcSet": "/media/previews/works-sunseasons-manual-sunseasons-13-640.webp 640w, /media/previews/works-sunseasons-manual-sunseasons-13-1280.webp 1280w",
+    "width": 8054,
+    "height": 4530
+  },
+  "/works/sunseasons-manual/sunseasons-14.png": {
+    "src": "/media/previews/works-sunseasons-manual-sunseasons-14-1280.webp",
+    "srcSet": "/media/previews/works-sunseasons-manual-sunseasons-14-640.webp 640w, /media/previews/works-sunseasons-manual-sunseasons-14-1280.webp 1280w",
+    "width": 8054,
+    "height": 4530
+  },
+  "/works/sunseasons-manual/sunseasons-16.png": {
+    "src": "/media/previews/works-sunseasons-manual-sunseasons-16-1280.webp",
+    "srcSet": "/media/previews/works-sunseasons-manual-sunseasons-16-640.webp 640w, /media/previews/works-sunseasons-manual-sunseasons-16-1280.webp 1280w",
+    "width": 8054,
+    "height": 4530
+  },
+  "/works/sunseasons-manual/sunseasons-25.png": {
+    "src": "/media/previews/works-sunseasons-manual-sunseasons-25-1280.webp",
+    "srcSet": "/media/previews/works-sunseasons-manual-sunseasons-25-640.webp 640w, /media/previews/works-sunseasons-manual-sunseasons-25-1280.webp 1280w",
+    "width": 8054,
+    "height": 4530
+  },
+  "/works/ai-video/01-ai-video.mp4": {
+    "poster": "/media/previews/works-ai-video-01-ai-video-poster.jpg"
+  },
+  "/works/ai-video/02-ai-video.mp4": {
+    "poster": "/media/previews/works-ai-video-02-ai-video-poster.jpg"
+  },
+  "/works/ai-video/03-ai-video.mp4": {
+    "poster": "/media/previews/works-ai-video-03-ai-video-poster.jpg"
+  },
+  "/works/ai-video/04-ai-video.mp4": {
+    "poster": "/media/previews/works-ai-video-04-ai-video-poster.jpg"
+  },
+  "/works/three-d-scenes/01-oxygen-concentrator-sofa.jpg": {
+    "src": "/media/previews/works-three-d-scenes-01-oxygen-concentrator-sofa-1280.webp",
+    "srcSet": "/media/previews/works-three-d-scenes-01-oxygen-concentrator-sofa-640.webp 640w, /media/previews/works-three-d-scenes-01-oxygen-concentrator-sofa-1280.webp 1280w",
+    "width": 1500,
+    "height": 2200
+  },
+  "/works/three-d-scenes/02-ovaria-plus.jpg": {
+    "src": "/media/previews/works-three-d-scenes-02-ovaria-plus-1280.webp",
+    "srcSet": "/media/previews/works-three-d-scenes-02-ovaria-plus-640.webp 640w, /media/previews/works-three-d-scenes-02-ovaria-plus-1280.webp 1280w",
+    "width": 1400,
+    "height": 2126
+  },
+  "/works/three-d-scenes/03-oxygen-concentrator-window.jpg": {
+    "src": "/media/previews/works-three-d-scenes-03-oxygen-concentrator-window-1280.webp",
+    "srcSet": "/media/previews/works-three-d-scenes-03-oxygen-concentrator-window-640.webp 640w, /media/previews/works-three-d-scenes-03-oxygen-concentrator-window-1280.webp 1280w",
+    "width": 2000,
+    "height": 2000
+  },
+  "/works/three-d-scenes/04-oxygen-concentrator-mountain-room.jpg": {
+    "src": "/media/previews/works-three-d-scenes-04-oxygen-concentrator-mountain-room-1280.webp",
+    "srcSet": "/media/previews/works-three-d-scenes-04-oxygen-concentrator-mountain-room-640.webp 640w, /media/previews/works-three-d-scenes-04-oxygen-concentrator-mountain-room-1280.webp 1280w",
+    "width": 3800,
+    "height": 3800
+  },
+  "/works/three-d-scenes/05-home-oxygen-device-chair.jpg": {
+    "src": "/media/previews/works-three-d-scenes-05-home-oxygen-device-chair-1280.webp",
+    "srcSet": "/media/previews/works-three-d-scenes-05-home-oxygen-device-chair-640.webp 640w, /media/previews/works-three-d-scenes-05-home-oxygen-device-chair-1280.webp 1280w",
+    "width": 3800,
+    "height": 3800
+  },
+  "/works/three-d-scenes/06-orange-oxygen-concentrator-winter.jpg": {
+    "src": "/media/previews/works-three-d-scenes-06-orange-oxygen-concentrator-winter-1280.webp",
+    "srcSet": "/media/previews/works-three-d-scenes-06-orange-oxygen-concentrator-winter-640.webp 640w, /media/previews/works-three-d-scenes-06-orange-oxygen-concentrator-winter-1280.webp 1280w",
+    "width": 3800,
+    "height": 5700
+  },
+  "/works/three-d-scenes/07-oxygen-concentrator-cabinet.jpg": {
+    "src": "/media/previews/works-three-d-scenes-07-oxygen-concentrator-cabinet-1280.webp",
+    "srcSet": "/media/previews/works-three-d-scenes-07-oxygen-concentrator-cabinet-640.webp 640w, /media/previews/works-three-d-scenes-07-oxygen-concentrator-cabinet-1280.webp 1280w",
+    "width": 3800,
+    "height": 3800
+  },
+  "/works/three-d-scenes/08-oxygen-concentrator-lounge.jpg": {
+    "src": "/media/previews/works-three-d-scenes-08-oxygen-concentrator-lounge-1280.webp",
+    "srcSet": "/media/previews/works-three-d-scenes-08-oxygen-concentrator-lounge-640.webp 640w, /media/previews/works-three-d-scenes-08-oxygen-concentrator-lounge-1280.webp 1280w",
+    "width": 3800,
+    "height": 3800
+  },
+  "/works/three-d-scenes/09-oxygen-concentrator-nature.jpg": {
+    "src": "/media/previews/works-three-d-scenes-09-oxygen-concentrator-nature-1280.webp",
+    "srcSet": "/media/previews/works-three-d-scenes-09-oxygen-concentrator-nature-640.webp 640w, /media/previews/works-three-d-scenes-09-oxygen-concentrator-nature-1280.webp 1280w",
+    "width": 3800,
+    "height": 3801
+  },
+  "/works/three-d-motion/01-motion.mp4": {
+    "poster": "/media/previews/works-three-d-motion-01-motion-poster.jpg"
+  },
+  "/works/three-d-motion/01-motion-poster-04s.png": {
+    "src": "/media/previews/works-three-d-motion-01-motion-poster-04s-1280.webp",
+    "srcSet": "/media/previews/works-three-d-motion-01-motion-poster-04s-640.webp 640w, /media/previews/works-three-d-motion-01-motion-poster-04s-1280.webp 1280w",
+    "width": 1920,
+    "height": 1080
+  },
+  "/works/three-d-motion/02-motion-portrait.mp4": {
+    "poster": "/media/previews/works-three-d-motion-02-motion-portrait-poster.jpg"
+  },
+  "/works/three-d-motion/03-skincare-motion.mp4": {
+    "poster": "/media/previews/works-three-d-motion-03-skincare-motion-poster.jpg"
+  },
+  "/works/three-d-motion/04-motion.mp4": {
+    "poster": "/media/previews/works-three-d-motion-04-motion-poster.jpg"
+  },
+  "/works/three-d-motion/05-motion.mp4": {
+    "poster": "/media/previews/works-three-d-motion-05-motion-poster.jpg"
+  },
+  "/works/product-detail/01-317-oxygen.jpg": {
+    "src": "/media/previews/works-product-detail-01-317-oxygen-540.webp",
+    "srcSet": "/media/previews/works-product-detail-01-317-oxygen-360.webp 360w, /media/previews/works-product-detail-01-317-oxygen-540.webp 540w",
+    "width": 790,
+    "height": 22967
+  },
+  "/works/product-detail/02-calcium-basketball.jpg": {
+    "src": "/media/previews/works-product-detail-02-calcium-basketball-540.webp",
+    "srcSet": "/media/previews/works-product-detail-02-calcium-basketball-360.webp 360w, /media/previews/works-product-detail-02-calcium-basketball-540.webp 540w",
+    "width": 1440,
+    "height": 31255
+  },
+  "/works/product-detail/03-calcium-maternity.jpg": {
+    "src": "/media/previews/works-product-detail-03-calcium-maternity-540.webp",
+    "srcSet": "/media/previews/works-product-detail-03-calcium-maternity-360.webp 360w, /media/previews/works-product-detail-03-calcium-maternity-540.webp 540w",
+    "width": 1440,
+    "height": 36476
+  },
+  "/media/jiangtao-portrait.jpg": {
+    "src": "/media/previews/media-jiangtao-portrait-1240.webp",
+    "srcSet": "/media/previews/media-jiangtao-portrait-640.webp 640w, /media/previews/media-jiangtao-portrait-1240.webp 1240w",
+    "width": 1240,
+    "height": 1333
+  }
+}

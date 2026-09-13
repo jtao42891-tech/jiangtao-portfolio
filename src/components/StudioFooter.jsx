@@ -4,7 +4,8 @@ import { timeForAngle } from '../gaze-utils'
 import RevealText from './RevealText'
 import './studio-footer.css'
 
-export function GazeBackground({ className = 'studio-background' }) {
+export function GazeBackground({ className = 'studio-background', priority = false }) {
+  const containerRef = useRef(null)
   const videoRef = useRef(null)
   useEffect(() => {
     const video = videoRef.current
@@ -18,8 +19,19 @@ export function GazeBackground({ className = 'studio-background' }) {
     let candidateTime = Number.NaN
     let candidateTicks = 0
     let lastFrameAt = 0
-    const mobile = window.matchMedia('(max-width: 700px)')
+    const mobile = window.matchMedia('(max-width: 700px), (hover: none) and (pointer: coarse)')
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const connection = navigator.connection
+    let requestedSource = ''
+    // Keep an image visible until an actual decoded/playing frame is available.
+    const showVideo = () => {
+      video.dataset.frameReady = 'true'
+      containerRef.current?.setAttribute('data-frame-ready', 'true')
+    }
+    const showPoster = () => {
+      delete video.dataset.frameReady
+      containerRef.current?.removeAttribute('data-frame-ready')
+    }
     const seek = timestamp => {
       frame = 0
       if (disposed || !visible || document.hidden || mobile.matches || video.readyState < 2 || !Number.isFinite(video.duration) || targetAngle === null) {
@@ -56,41 +68,71 @@ export function GazeBackground({ className = 'studio-background' }) {
     }
     const move = event => { pointer = { x: event.clientX, y: event.clientY }; updateTarget() }
     const ready = () => {
+      if (disposed) return
+      if (!visible || document.hidden) { video.pause(); return }
+      if (reducedMotion.matches || connection?.saveData) {
+        video.pause()
+        showPoster()
+        return
+      }
+      const source = mobile.matches ? '/footer-mobile.mp4' : '/footer-scrub.mp4'
+      if (source !== requestedSource) {
+        requestedSource = source
+        showPoster()
+        video.muted = true
+        video.defaultMuted = true
+        video.playsInline = true
+        video.src = source
+        video.load()
+      }
       video.loop = mobile.matches
-      if (mobile.matches && !reducedMotion.matches && visible && !document.hidden) {
-        video.play().catch(() => {})
+      if (mobile.matches) {
+        video.play().catch(() => { if (!disposed && video.paused) showPoster() })
       } else {
         video.pause()
-        if (!mobile.matches) { updateTarget(); schedule() }
+        if (video.readyState >= 2) showVideo()
+        updateTarget(); schedule()
       }
     }
-    const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; ready() }, { threshold: 0.01 })
-    observer.observe(video)
+    const observer = typeof IntersectionObserver === 'undefined' ? null : new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; ready() }, { rootMargin: '200px 0px', threshold: 0 })
+    observer?.observe(containerRef.current)
+    if (!observer) { visible = true; ready() }
     video.addEventListener('seeked', schedule)
     video.addEventListener('loadeddata', ready)
+    video.addEventListener('canplay', ready)
+    video.addEventListener('playing', showVideo)
+    video.addEventListener('error', showPoster)
     mobile.addEventListener('change', ready)
     reducedMotion.addEventListener('change', ready)
     window.addEventListener('pointermove', move, { passive: true })
     window.addEventListener('resize', updateTarget)
     window.addEventListener('scroll', updateTarget, { passive: true })
     document.addEventListener('visibilitychange', ready)
+    connection?.addEventListener?.('change', ready)
     if (video.readyState >= 2) ready()
     return () => {
       disposed = true
       cancelAnimationFrame(frame)
-      observer.disconnect()
+      observer?.disconnect()
       video.pause()
       video.removeEventListener('seeked', schedule)
       video.removeEventListener('loadeddata', ready)
+      video.removeEventListener('canplay', ready)
+      video.removeEventListener('playing', showVideo)
+      video.removeEventListener('error', showPoster)
       mobile.removeEventListener('change', ready)
       reducedMotion.removeEventListener('change', ready)
       window.removeEventListener('pointermove', move)
       window.removeEventListener('resize', updateTarget)
       window.removeEventListener('scroll', updateTarget)
       document.removeEventListener('visibilitychange', ready)
+      connection?.removeEventListener?.('change', ready)
     }
   }, [])
-  return <div className={className} aria-hidden="true"><video ref={videoRef} muted playsInline preload="auto" src="/footer-scrub.mp4" /></div>
+  return <div ref={containerRef} className={className} aria-hidden="true">
+    <img className="gaze-poster" src="/footer-poster.jpg" alt="" width="1280" height="720" loading={priority ? 'eager' : 'lazy'} fetchPriority={priority ? 'high' : 'low'} decoding="async" />
+    <video className="gaze-video" ref={videoRef} muted playsInline preload="none" poster="/footer-poster.jpg" />
+  </div>
 }
 
 export default function StudioFooter({ onContact, reduced = false }) {

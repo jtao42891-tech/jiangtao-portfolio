@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { gallerySections, sectionItems } from '../gallery-data'
+import { previewImageProps, videoPoster } from '../media-preview'
 import useDragScroll from '../useDragScroll'
 import { createHintBounceMotion } from '../motion/hintBounce'
 import Dialog from './Dialog'
@@ -35,10 +36,11 @@ function MediaCard({ item, index, onOpen, className = '', preserveRatio = false,
   const [failed, setFailed] = useState(false)
   useEffect(() => setFailed(false), [item.src, item.poster])
   const real = item.src && !failed
+  const poster = item.kind === 'video' ? videoPoster(item) : ''
   const displayRatio = frameRatio || (preserveRatio ? item.ratio : '')
   return <article className={'gallery-card kind-' + item.kind + ' ' + className} data-frame-ratio={frameRatio || undefined} data-preview-fit={item.previewFit || undefined}>
     <button className="gallery-image-button" style={displayRatio ? { aspectRatio: displayRatio.replace(':', ' / ') } : undefined} onClick={onOpen} aria-label={(item.kind === 'video' ? '播放或查看' : '放大查看') + item.title}>
-      {real ? item.kind === 'video' && !item.poster ? <video src={item.src} preload="metadata" muted playsInline onError={() => setFailed(true)} tabIndex={-1} /> : <img src={item.kind === 'video' ? item.poster : item.src} alt={item.alt || item.title} loading="lazy" decoding="async" draggable="false" onError={() => setFailed(true)} /> : <Placeholder item={item} index={index} failed={failed} />}
+      {real ? item.kind === 'video' && !poster ? <video src={item.src} preload="none" muted playsInline onError={() => setFailed(true)} tabIndex={-1} /> : <img {...previewImageProps(poster || item.src)} alt={item.alt || item.title} loading="lazy" decoding="async" draggable="false" onError={() => setFailed(true)} /> : <Placeholder item={item} index={index} failed={failed} />}
       <span className={'gallery-view-icon ' + (real && item.kind === 'video' ? 'real-video-play' : '')}><Icon play={item.kind === 'video'} expand={item.kind !== 'video'} /></span>
     </button>
   </article>
@@ -103,7 +105,7 @@ function LongPagePreviewCard({ item, index, hintId, onOpen }) {
   }
   return <article className="homepage-preview-card">
     <div ref={previewRef} className="homepage-preview-cover" role="region" tabIndex={0} aria-labelledby={item.id + '-preview-title'} aria-describedby={hintId} aria-description="按住鼠标上下拖动，或使用上下方向键、PageUp、PageDown、Home、End 浏览长图。" {...dragHandlers} onKeyDown={onKeyDown}>
-      {failed ? <Placeholder item={item} index={index} failed /> : <img src={item.src} alt={item.title + '，长图预览'} loading="lazy" decoding="async" draggable="false" onError={() => setFailed(true)} />}
+      {failed ? <Placeholder item={item} index={index} failed /> : <img {...previewImageProps(item.src)} alt={item.title + '，长图预览'} loading="lazy" decoding="async" draggable="false" onError={() => setFailed(true)} />}
     </div>
     <div className="homepage-preview-footer">
       <span className="sr-only" id={item.id + '-preview-title'}>{item.title}</span>
@@ -119,7 +121,7 @@ function LongPageCard({ item, onOpen }) {
   return <article className="long-page-card">
     <div className="long-page-toolbar"><span><i aria-hidden="true" /> {item.title}</span><button onClick={onOpen} aria-label={'放大查看' + item.title}><Icon expand /></button></div>
     <div className="long-page-viewport">
-      {item.src && !failed ? <img src={item.src} alt={item.alt || item.title} loading="lazy" draggable="false" onError={() => setFailed(true)} /> : failed ? <Placeholder item={item} failed /> : <LongPlaceholder item={item} />}
+      {item.src && !failed ? <img {...previewImageProps(item.src)} alt={item.alt || item.title} loading="lazy" decoding="async" draggable="false" onError={() => setFailed(true)} /> : failed ? <Placeholder item={item} failed /> : <LongPlaceholder item={item} />}
     </div>
     <div className="gallery-caption"><span>{failed ? '素材加载失败，显示长图占位' : item.src ? '完整页面' : '长图预留位置'}</span></div>
   </article>
@@ -156,7 +158,7 @@ function MediaViewer({ viewer, onClose }) {
   return <Dialog className="media-lightbox" labelId="media-viewer-title" onClose={onClose} onKeyDown={onKeyDown} showClose={false} animated>{({ requestClose }) => <>
     <div className="viewer-header"><h2 id="media-viewer-title" title={item.title} aria-live="polite">{item.title}</h2><button className="viewer-close" onClick={requestClose} aria-label="关闭大图预览" autoFocus>关闭 <span aria-hidden="true">×</span></button></div>
     {item.src && !failed && item.kind !== 'video' ? <ZoomableImage key={item.id} item={item} onError={() => setFailed(true)} /> : <div className="viewer-media" key={item.id} tabIndex={0} aria-label="作品预览">
-      {!item.src || failed ? item.kind === 'long' && !failed ? <LongPlaceholder item={item} /> : <Placeholder item={item} index={index} large failed={failed} /> : <video ref={playerRef} src={item.src} poster={item.poster || undefined} controls autoPlay playsInline preload="auto" onError={() => setFailed(true)} />}
+      {!item.src || failed ? item.kind === 'long' && !failed ? <LongPlaceholder item={item} /> : <Placeholder item={item} index={index} large failed={failed} /> : <video ref={playerRef} src={item.src} poster={videoPoster(item) || undefined} controls autoPlay playsInline preload="auto" onError={() => setFailed(true)} />}
     </div>}
   </>}</Dialog>
 }
