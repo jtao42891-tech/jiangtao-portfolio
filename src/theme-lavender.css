@@ -224,3 +224,32 @@ body { background:var(--bg); color:var(--text); }
 @media(prefers-reduced-motion:reduce) {
   .experience-button,.experience-button svg { transition:none; }
 }
+
+/* Phone-only breathing room: enlarge previews without changing desktop or the grids. */
+@media (max-width:700px) and (hover:none) and (pointer:coarse) {
+  :root { --gutter:12px; }
+  .gallery-section.work-section { --gallery-text-inset:4px; }
+  .gallery-section .work-index { margin-inline:calc(-1 * var(--gutter)); padding-inline:var(--gutter); }
+  .studio-footer { padding-inline:var(--gutter); }
+  .studio-character { width:calc(100% + var(--gutter)); }
+
+  .gallery-section .category-grid,
+  .gallery-section .homepage-preview-grid,
+  .gallery-section .packaging-reveal-grid,
+  .gallery-section .project-group > .project-grid { gap:8px 6px; }
+  .gallery-section #creative .project-grid,
+  .gallery-section #marketing-main .project-grid { column-gap:6px; }
+  .gallery-section .project-group > .project-grid.project-grid-proportional,
+  .gallery-section .project-group > .project-grid.project-grid-staggered { column-gap:6px; }
+  .gallery-section .project-staggered-column { gap:6px; }
+  .gallery-section .project-group > .project-grid.project-grid-mosaic {
+    --mosaic-gap:6px;
+    gap:calc(var(--mosaic-gap) * 9 / 16) var(--mosaic-gap);
+  }
+  .gallery-section .creative-rail { --rail-gap:8px; }
+  .gallery-section .square-featured-grid.direct-scroll { column-gap:8px; }
+
+  .gallery-section div.gallery-image-button,
+  .gallery-section div.packaging-reveal-stage { cursor:default; }
+  .gallery-section div.gallery-image-button:hover > img { transform:none; }
+}

@@ -1,0 +1,14 @@
+{
+  "/works/livestream-design/03-fish-oil-sports.gif": {
+    "src": "/media/mobile-previews/works-livestream-design-03-fish-oil-sports-mobile-640-12e7a6c723.webp",
+    "srcSet": "/media/mobile-previews/works-livestream-design-03-fish-oil-sports-mobile-320-77c72b4896.webp 320w, /media/mobile-previews/works-livestream-design-03-fish-oil-sports-mobile-360-846cd22ae4.webp 360w, /media/mobile-previews/works-livestream-design-03-fish-oil-sports-mobile-480-89f7c20e2a.webp 480w, /media/mobile-previews/works-livestream-design-03-fish-oil-sports-mobile-640-12e7a6c723.webp 640w",
+    "width": 900,
+    "height": 1600
+  },
+  "/works/three-d-motion/06-portable-oxygen.gif": {
+    "src": "/media/mobile-previews/works-three-d-motion-06-portable-oxygen-mobile-640-0d4565fae6.webp",
+    "srcSet": "/media/mobile-previews/works-three-d-motion-06-portable-oxygen-mobile-320-251b0de0e1.webp 320w, /media/mobile-previews/works-three-d-motion-06-portable-oxygen-mobile-360-c8997b0e0f.webp 360w, /media/mobile-previews/works-three-d-motion-06-portable-oxygen-mobile-480-af758ae297.webp 480w, /media/mobile-previews/works-three-d-motion-06-portable-oxygen-mobile-640-0d4565fae6.webp 640w",
+    "width": 1080,
+    "height": 519
+  }
+}

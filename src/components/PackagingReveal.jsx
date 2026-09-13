@@ -19,7 +19,8 @@ const getSplitMetrics = (ratio, requestedSplit) => {
   }
 }
 
-function PackagingRevealCard({ item, reduced, onOpen }) {
+function PackagingRevealCard({ item, reduced, onOpen, allowImagePreview }) {
+  const Surface = allowImagePreview ? 'button' : 'div'
   const [rendered, setRendered] = useState(false)
   const [transitioning, setTransitioning] = useState(false)
   const [failed, setFailed] = useState(false)
@@ -74,7 +75,7 @@ function PackagingRevealCard({ item, reduced, onOpen }) {
   const metrics = getSplitMetrics(item.ratio, item.splitY)
 
   return <article className={cardClass}>
-    <button className="packaging-reveal-stage" style={{ aspectRatio: metrics.panelAspect, '--packaging-render-offset': metrics.renderOffset }} type="button" onClick={onOpen} aria-haspopup="dialog" aria-label={`放大查看${item.title}，${stateText}`}>
+    <Surface className="packaging-reveal-stage" style={{ aspectRatio: metrics.panelAspect, '--packaging-render-offset': metrics.renderOffset }} type={allowImagePreview ? 'button' : undefined} onClick={allowImagePreview ? onOpen : undefined} aria-haspopup={allowImagePreview ? 'dialog' : undefined} aria-label={allowImagePreview ? `放大查看${item.title}，${stateText}` : undefined}>
       {failed ? <div className="packaging-reveal-error">图片暂时无法加载</div> : <>
         <div className="packaging-reveal-layer packaging-reveal-draft" aria-hidden={rendered}>
           <PreviewImage src={item.src} alt={item.draftAlt || `${item.title}包装线稿图`} draggable="false" onError={() => setFailed(true)} />
@@ -84,9 +85,9 @@ function PackagingRevealCard({ item, reduced, onOpen }) {
         </div>
         {transitioning && <Suspense fallback={null}><ShapeBlur className="packaging-shape-blur" duration={TRANSITION_DURATION - 50} pixelRatioProp={typeof window === 'undefined' ? 1 : window.devicePixelRatio || 1} /></Suspense>}
       </>}
-      {!failed && <span className="packaging-view-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m8 0h5v-5" stroke="currentColor" strokeWidth="1.4" /></svg></span>}
+      {!failed && allowImagePreview && <span className="packaging-view-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m8 0h5v-5" stroke="currentColor" strokeWidth="1.4" /></svg></span>}
       <span className="sr-only packaging-reveal-state" aria-live="polite">{stateText}</span>
-    </button>
+    </Surface>
     <button ref={buttonRef} className={`packaging-render-button${buttonEntered ? ' is-entered' : ''}`} type="button" onClick={reveal} disabled={failed || transitioning} aria-pressed={rendered}>
       <span>{buttonText}</span>
       <span className="packaging-render-button-icon" aria-hidden="true">{rendered ? '↩' : '↗'}</span>
@@ -94,7 +95,7 @@ function PackagingRevealCard({ item, reduced, onOpen }) {
   </article>
 }
 
-export default function PackagingReveal({ items, reduced, onOpen }) {
+export default function PackagingReveal({ items, reduced, onOpen, allowImagePreview = true }) {
   const gridRef = useRef(null)
   useEffect(() => {
     const node = gridRef.current
@@ -108,6 +109,6 @@ export default function PackagingReveal({ items, reduced, onOpen }) {
     return () => observer.disconnect()
   }, [])
   return <div ref={gridRef} className="packaging-reveal-grid" role="group" aria-label="包装设计线稿与3D效果图">
-    {items.map((item, index) => <PackagingRevealCard key={item.id} item={item} reduced={reduced} onOpen={() => onOpen(index)} />)}
+    {items.map((item, index) => <PackagingRevealCard key={item.id} item={item} reduced={reduced} allowImagePreview={allowImagePreview} onOpen={() => onOpen(index)} />)}
   </div>
 }

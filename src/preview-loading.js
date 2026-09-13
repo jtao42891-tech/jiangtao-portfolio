@@ -1,4 +1,8 @@
-export function observePreviewImage(image, onWidth) {
+export function isMobilePreviewDevice() {
+  return typeof window !== 'undefined' && !!window.matchMedia?.('(hover: none) and (pointer: coarse)').matches
+}
+
+export function observePreviewImage(image, onWidth, { mobile = false } = {}) {
   let active = false
   let disposed = false
   const measure = () => {
@@ -17,7 +21,7 @@ export function observePreviewImage(image, onWidth) {
     if (!entries.some(entry => entry.isIntersecting)) return
     activate()
     observer.disconnect()
-  }, { rootMargin: '350px 0px' })
+  }, { rootMargin: mobile ? '900px 0px' : '350px 0px' })
   if (observer) observer.observe(image)
   else activate()
   const measureActive = () => { if (active) measure() }

@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { observePreviewImage } from '../src/preview-loading.js'
+import { isMobilePreviewDevice, observePreviewImage } from '../src/preview-loading.js'
 
 function observers(t) {
   const instances = []
@@ -56,4 +56,35 @@ test('zero-width cards wait for layout instead of selecting a whole-screen image
   cleanup()
   assert.equal(resize.disconnected, true)
   assert.equal(intersection.disconnected, true)
+})
+
+test('mobile images begin loading a screen ahead, desktop keeps its original range', t => {
+  const instances = observers(t)
+  const widths = []
+  const cleanup = observePreviewImage({ clientWidth: 118 }, width => widths.push(width), { mobile: true })
+  const [, intersection] = instances
+  assert.equal(intersection.options.rootMargin, '900px 0px')
+  assert.deepEqual(widths, [])
+  intersection.callback([{ isIntersecting: true }])
+  assert.deepEqual(widths, [118])
+  cleanup()
+})
+
+test('mobile mode depends on touch input, not a narrow desktop window', t => {
+  const previous = Object.getOwnPropertyDescriptor(globalThis, 'window')
+  let touch = false
+  Object.defineProperty(globalThis, 'window', { configurable: true, value: {
+    innerWidth: 390,
+    matchMedia(query) {
+      assert.equal(query, '(hover: none) and (pointer: coarse)')
+      return { matches: touch }
+    },
+  } })
+  t.after(() => {
+    if (previous) Object.defineProperty(globalThis, 'window', previous)
+    else delete globalThis.window
+  })
+  assert.equal(isMobilePreviewDevice(), false)
+  touch = true
+  assert.equal(isMobilePreviewDevice(), true)
 })

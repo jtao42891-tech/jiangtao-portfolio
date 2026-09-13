@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'react'
+import { createContext, useContext, useEffect, useRef, useState } from 'react'
 import { gallerySections, sectionItems } from '../gallery-data'
 import { videoPoster } from '../media-preview'
+import { isMobilePreviewDevice } from '../preview-loading'
 import PreviewImage from './PreviewImage'
 import useDragScroll from '../useDragScroll'
 import { createHintBounceMotion } from '../motion/hintBounce'
@@ -12,6 +13,8 @@ import ProjectGrid, { SkipProject } from './ProjectGrid'
 import ZoomableImage from './ZoomableImage'
 import './work-gallery.css'
 import './homepage-project.css'
+
+const ImagePreviewContext = createContext(true)
 
 function Icon({ direction = 'right', expand = false, play = false }) {
   return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -34,21 +37,25 @@ function LongPlaceholder({ item }) {
 }
 
 function MediaCard({ item, index, onOpen, className = '', preserveRatio = false, frameRatio = '' }) {
+  const allowImagePreview = useContext(ImagePreviewContext)
+  const canOpen = item.kind === 'video' || allowImagePreview
+  const Surface = canOpen ? 'button' : 'div'
   const [failed, setFailed] = useState(false)
   useEffect(() => setFailed(false), [item.src, item.poster])
   const real = item.src && !failed
   const poster = item.kind === 'video' ? videoPoster(item) : ''
   const displayRatio = frameRatio || (preserveRatio ? item.ratio : '')
   return <article className={'gallery-card kind-' + item.kind + ' ' + className} data-frame-ratio={frameRatio || undefined} data-preview-fit={item.previewFit || undefined}>
-    <button className="gallery-image-button" style={displayRatio ? { aspectRatio: displayRatio.replace(':', ' / ') } : undefined} onClick={onOpen} aria-label={(item.kind === 'video' ? '播放或查看' : '放大查看') + item.title}>
+    <Surface className="gallery-image-button" style={displayRatio ? { aspectRatio: displayRatio.replace(':', ' / ') } : undefined} onClick={canOpen ? onOpen : undefined} aria-label={canOpen ? (item.kind === 'video' ? '播放或查看' : '放大查看') + item.title : undefined}>
       {real ? item.kind === 'video' && !poster ? <video src={item.src} preload="none" muted playsInline onError={() => setFailed(true)} tabIndex={-1} /> : <PreviewImage src={poster || item.src} alt={item.alt || item.title} draggable="false" onError={() => setFailed(true)} /> : <Placeholder item={item} index={index} failed={failed} />}
-      <span className={'gallery-view-icon ' + (real && item.kind === 'video' ? 'real-video-play' : '')}><Icon play={item.kind === 'video'} expand={item.kind !== 'video'} /></span>
-    </button>
+      {canOpen && <span className={'gallery-view-icon ' + (real && item.kind === 'video' ? 'real-video-play' : '')}><Icon play={item.kind === 'video'} expand={item.kind !== 'video'} /></span>}
+    </Surface>
   </article>
 }
 
 
 export function GuidedProject({ group, nextId, nextTitle, onOpen, reduced, skipInHeading = false }) {
+  const allowImagePreview = useContext(ImagePreviewContext)
   if (group.collections) return <ProjectGrid id={group.id + '-sequence'} title={group.title} nextId={nextId} nextTitle={nextTitle} reduced={reduced} showSkip={group.showSkip !== false}>
     {group.collections.map(collection => <section className="project-collection" id={collection.id} key={collection.id} aria-labelledby={collection.id + '-title'}>
       <h5 id={collection.id + '-title'}>{collection.title}</h5>
@@ -60,7 +67,7 @@ export function GuidedProject({ group, nextId, nextTitle, onOpen, reduced, skipI
     const items = group.items.filter(item => item.src)
     return <ProjectGrid id={group.id + '-sequence'} title={group.title} nextId={nextId} nextTitle={nextTitle} reduced={reduced}
       showHeading={!skipInHeading} showSkip={group.showSkip !== false} labelledBy={group.id + '-title'}>
-      <PackagingReveal items={items} reduced={reduced} onOpen={index => onOpen(items, index, group.title)} />
+      <PackagingReveal items={items} reduced={reduced} allowImagePreview={allowImagePreview} onOpen={index => onOpen(items, index, group.title)} />
     </ProjectGrid>
   }
   const actual = group.items.filter(item => item.src)
@@ -82,6 +89,7 @@ export function GuidedProject({ group, nextId, nextTitle, onOpen, reduced, skipI
 
 
 function LongPagePreviewCard({ item, index, hintId, onOpen }) {
+  const allowImagePreview = useContext(ImagePreviewContext)
   const [failed, setFailed] = useState(false)
   const previewRef = useRef(null)
   const dragHandlers = useDragScroll(previewRef, { axis: 'y', enabled: !failed })
@@ -108,19 +116,20 @@ function LongPagePreviewCard({ item, index, hintId, onOpen }) {
     <div ref={previewRef} className="homepage-preview-cover" role="region" tabIndex={0} aria-labelledby={item.id + '-preview-title'} aria-describedby={hintId} aria-description="按住鼠标上下拖动，或使用上下方向键、PageUp、PageDown、Home、End 浏览长图。" {...dragHandlers} onKeyDown={onKeyDown}>
       {failed ? <Placeholder item={item} index={index} failed /> : <PreviewImage src={item.src} alt={item.title + '，长图预览'} draggable="false" onError={() => setFailed(true)} />}
     </div>
-    <div className="homepage-preview-footer">
+    {allowImagePreview ? <div className="homepage-preview-footer">
       <span className="sr-only" id={item.id + '-preview-title'}>{item.title}</span>
       <button type="button" className="homepage-preview-open" onClick={onOpen} aria-haspopup="dialog" aria-label={'点击查看大图：' + item.title}>点击查看大图</button>
-    </div>
+    </div> : <span className="sr-only" id={item.id + '-preview-title'}>{item.title}</span>}
   </article>
 }
 
 
 function LongPageCard({ item, onOpen }) {
+  const allowImagePreview = useContext(ImagePreviewContext)
   const [failed, setFailed] = useState(false)
   useEffect(() => setFailed(false), [item.src])
   return <article className="long-page-card">
-    <div className="long-page-toolbar"><span><i aria-hidden="true" /> {item.title}</span><button onClick={onOpen} aria-label={'放大查看' + item.title}><Icon expand /></button></div>
+    <div className="long-page-toolbar"><span><i aria-hidden="true" /> {item.title}</span>{allowImagePreview && <button onClick={onOpen} aria-label={'放大查看' + item.title}><Icon expand /></button>}</div>
     <div className="long-page-viewport">
       {item.src && !failed ? <PreviewImage src={item.src} alt={item.alt || item.title} draggable="false" onError={() => setFailed(true)} /> : failed ? <Placeholder item={item} failed /> : <LongPlaceholder item={item} />}
     </div>
@@ -165,11 +174,21 @@ function MediaViewer({ viewer, onClose }) {
 }
 
 export default function WorkGallery({ reduced }) {
+  const [allowImagePreview, setAllowImagePreview] = useState(() => !isMobilePreviewDevice())
   const galleryRef = useRef(null)
   const [viewer, setViewer] = useState(null)
   const [active, setActive] = useState(gallerySections[0].id)
   const indexRef = useRef(null)
   const indexDragHandlers = useDragScroll(indexRef)
+  useEffect(() => {
+    const media = window.matchMedia('(hover: none) and (pointer: coarse)')
+    const update = () => {
+      setAllowImagePreview(!media.matches)
+      if (media.matches) setViewer(current => current && current.items[current.index]?.kind !== 'video' ? null : current)
+    }
+    media.addEventListener('change', update)
+    return () => media.removeEventListener('change', update)
+  }, [])
   useEffect(() => {
     const cleanups = Array.from(galleryRef.current.querySelectorAll('.long-preview-hint'), hint => createHintBounceMotion(hint, reduced))
     return () => cleanups.forEach(cleanup => cleanup())
@@ -181,9 +200,17 @@ export default function WorkGallery({ reduced }) {
     document.querySelectorAll('.work-category').forEach(section => observer.observe(section))
     return () => observer.disconnect()
   }, [])
-  const onOpen = (items, index, title) => setViewer({ items, index, title })
+  const onOpen = (items, index, title) => {
+    if (isMobilePreviewDevice()) {
+      if (items[index]?.kind !== 'video') return
+      const videos = items.filter(item => item.kind === 'video')
+      setViewer({ items: videos, index: videos.indexOf(items[index]), title })
+      return
+    }
+    setViewer({ items, index, title })
+  }
   const actualCount = gallerySections.flatMap(sectionItems).filter(item => item.src).length
-  return <section ref={galleryRef} id="work" className="work-section section gallery-section" aria-labelledby="work-title">
+  return <ImagePreviewContext.Provider value={allowImagePreview}><section ref={galleryRef} id="work" className="work-section section gallery-section" aria-labelledby="work-title">
     <div className="shell">
       <h2 id="work-title" className="sr-only">精选作品</h2>
       {actualCount === 0 && <p className="gallery-intro-note"><span className="status-dot" /> 作品位置已预留，等待真实创作入场。</p>}
@@ -216,5 +243,5 @@ export default function WorkGallery({ reduced }) {
       <div className="gallery-end"><a href="#work">回到作品目录 ↑</a></div>
     </div>
     {viewer && <MediaViewer viewer={viewer} onClose={() => setViewer(null)} />}
-  </section>
+  </section></ImagePreviewContext.Provider>
 }
