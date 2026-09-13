@@ -43,6 +43,7 @@ export const gallerySections = [
     id: 'marketing-main', number: '02', title: '营销主图设计', english: 'Marketing design.',
     description: '聚焦产品卖点，设计第一眼的吸引力。', layout: 'square',
     items: slots('marketing-main', '营销主图', 6, 'image', '1:1'),
+    featuredIds: ['marketing-main-04', 'marketing-main-02', 'marketing-main-03', 'marketing-main-01', 'marketing-main-05', 'marketing-main-06'],
   },
   {
     id: 'livestream-design', number: '03', title: '直播间设计', english: 'Livestream studio design.',
