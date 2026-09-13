@@ -1,6 +1,6 @@
 import { memo, useEffect, useRef } from 'react'
 import { PROFILE_INTRO, sampleProfileIntro } from './profile-card-intro'
-import { previewImageProps } from '../media-preview'
+import PreviewImage from './PreviewImage'
 import './ProfileCard.css'
 
 const clamp = (value, min = 0, max = 100) => Math.min(Math.max(value, min), max)
@@ -190,7 +190,7 @@ function ProfileCard({ avatarUrl, name, className = '', enableTilt = true, behin
     <div ref={shellRef} className="pc-card-shell">
       <div className="pc-card">
         <div className="pc-inside">
-          <div className="pc-avatar-content"><img className="pc-avatar" {...previewImageProps(avatarUrl, '(max-width: 700px) 100vw, 440px')} alt={`${name}个人肖像`} loading="lazy" decoding="async" /></div>
+          <div className="pc-avatar-content"><PreviewImage className="pc-avatar" src={avatarUrl} alt={`${name}个人肖像`} /></div>
           <div className="pc-shine" aria-hidden="true" />
           <div className="pc-glare" aria-hidden="true" />
         </div>

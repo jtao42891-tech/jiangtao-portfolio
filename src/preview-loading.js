@@ -1,0 +1,31 @@
+export function observePreviewImage(image, onWidth) {
+  let active = false
+  let disposed = false
+  const measure = () => {
+    if (disposed) return
+    const width = Math.ceil(image.clientWidth)
+    if (width > 0) onWidth(width)
+  }
+  const resize = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(measure)
+  const activate = () => {
+    if (active || disposed) return
+    active = true
+    measure()
+    resize?.observe(image)
+  }
+  const observer = typeof IntersectionObserver === 'undefined' ? null : new IntersectionObserver(entries => {
+    if (!entries.some(entry => entry.isIntersecting)) return
+    activate()
+    observer.disconnect()
+  }, { rootMargin: '350px 0px' })
+  if (observer) observer.observe(image)
+  else activate()
+  const measureActive = () => { if (active) measure() }
+  if (!resize) window.addEventListener('resize', measureActive)
+  return () => {
+    disposed = true
+    observer?.disconnect()
+    resize?.disconnect()
+    if (!resize) window.removeEventListener('resize', measureActive)
+  }
+}

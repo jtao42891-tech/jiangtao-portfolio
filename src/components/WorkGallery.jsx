@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { gallerySections, sectionItems } from '../gallery-data'
-import { previewImageProps, videoPoster } from '../media-preview'
+import { videoPoster } from '../media-preview'
+import PreviewImage from './PreviewImage'
 import useDragScroll from '../useDragScroll'
 import { createHintBounceMotion } from '../motion/hintBounce'
 import Dialog from './Dialog'
@@ -40,7 +41,7 @@ function MediaCard({ item, index, onOpen, className = '', preserveRatio = false,
   const displayRatio = frameRatio || (preserveRatio ? item.ratio : '')
   return <article className={'gallery-card kind-' + item.kind + ' ' + className} data-frame-ratio={frameRatio || undefined} data-preview-fit={item.previewFit || undefined}>
     <button className="gallery-image-button" style={displayRatio ? { aspectRatio: displayRatio.replace(':', ' / ') } : undefined} onClick={onOpen} aria-label={(item.kind === 'video' ? '播放或查看' : '放大查看') + item.title}>
-      {real ? item.kind === 'video' && !poster ? <video src={item.src} preload="none" muted playsInline onError={() => setFailed(true)} tabIndex={-1} /> : <img {...previewImageProps(poster || item.src)} alt={item.alt || item.title} loading="lazy" decoding="async" draggable="false" onError={() => setFailed(true)} /> : <Placeholder item={item} index={index} failed={failed} />}
+      {real ? item.kind === 'video' && !poster ? <video src={item.src} preload="none" muted playsInline onError={() => setFailed(true)} tabIndex={-1} /> : <PreviewImage src={poster || item.src} alt={item.alt || item.title} draggable="false" onError={() => setFailed(true)} /> : <Placeholder item={item} index={index} failed={failed} />}
       <span className={'gallery-view-icon ' + (real && item.kind === 'video' ? 'real-video-play' : '')}><Icon play={item.kind === 'video'} expand={item.kind !== 'video'} /></span>
     </button>
   </article>
@@ -105,7 +106,7 @@ function LongPagePreviewCard({ item, index, hintId, onOpen }) {
   }
   return <article className="homepage-preview-card">
     <div ref={previewRef} className="homepage-preview-cover" role="region" tabIndex={0} aria-labelledby={item.id + '-preview-title'} aria-describedby={hintId} aria-description="按住鼠标上下拖动，或使用上下方向键、PageUp、PageDown、Home、End 浏览长图。" {...dragHandlers} onKeyDown={onKeyDown}>
-      {failed ? <Placeholder item={item} index={index} failed /> : <img {...previewImageProps(item.src)} alt={item.title + '，长图预览'} loading="lazy" decoding="async" draggable="false" onError={() => setFailed(true)} />}
+      {failed ? <Placeholder item={item} index={index} failed /> : <PreviewImage src={item.src} alt={item.title + '，长图预览'} draggable="false" onError={() => setFailed(true)} />}
     </div>
     <div className="homepage-preview-footer">
       <span className="sr-only" id={item.id + '-preview-title'}>{item.title}</span>
@@ -121,7 +122,7 @@ function LongPageCard({ item, onOpen }) {
   return <article className="long-page-card">
     <div className="long-page-toolbar"><span><i aria-hidden="true" /> {item.title}</span><button onClick={onOpen} aria-label={'放大查看' + item.title}><Icon expand /></button></div>
     <div className="long-page-viewport">
-      {item.src && !failed ? <img {...previewImageProps(item.src)} alt={item.alt || item.title} loading="lazy" decoding="async" draggable="false" onError={() => setFailed(true)} /> : failed ? <Placeholder item={item} failed /> : <LongPlaceholder item={item} />}
+      {item.src && !failed ? <PreviewImage src={item.src} alt={item.alt || item.title} draggable="false" onError={() => setFailed(true)} /> : failed ? <Placeholder item={item} failed /> : <LongPlaceholder item={item} />}
     </div>
     <div className="gallery-caption"><span>{failed ? '素材加载失败，显示长图占位' : item.src ? '完整页面' : '长图预留位置'}</span></div>
   </article>

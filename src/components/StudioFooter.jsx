@@ -19,7 +19,8 @@ export function GazeBackground({ className = 'studio-background', priority = fal
     let candidateTime = Number.NaN
     let candidateTicks = 0
     let lastFrameAt = 0
-    const mobile = window.matchMedia('(max-width: 700px), (hover: none) and (pointer: coarse)')
+    // A narrow desktop window still has a mouse and must keep gaze tracking.
+    const mobile = window.matchMedia('(hover: none) and (pointer: coarse)')
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
     const connection = navigator.connection
     let requestedSource = ''
@@ -75,13 +76,17 @@ export function GazeBackground({ className = 'studio-background', priority = fal
         showPoster()
         return
       }
-      const source = mobile.matches ? '/footer-mobile.mp4' : '/footer-scrub.mp4'
+      const source = mobile.matches ? '/footer-mobile.mp4' : '/footer-desktop.mp4'
       if (source !== requestedSource) {
         requestedSource = source
         showPoster()
         video.muted = true
         video.defaultMuted = true
         video.playsInline = true
+        // Desktop scrubbing never calls play(), so preload=none can otherwise
+        // leave it waiting on the poster instead of preparing seekable frames.
+        video.preload = 'auto'
+        appliedTime = Number.NaN
         video.src = source
         video.load()
       }

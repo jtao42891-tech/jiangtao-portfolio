@@ -1,0 +1,19 @@
+# Fingerprinted build assets can be reused without a network revalidation.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# These filenames can be replaced, so keep their browser cache bounded.
+/media/previews/*
+  Cache-Control: public, max-age=3600
+
+/fonts/*
+  Cache-Control: public, max-age=86400
+
+/footer-mobile.mp4
+  Cache-Control: public, max-age=3600
+
+/footer-desktop.mp4
+  Cache-Control: public, max-age=3600
+
+/footer-poster.jpg
+  Cache-Control: public, max-age=3600

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { ipOrbitStyles } from '../ip-utils'
 import useIPOrbit from '../useIPOrbit'
-import { previewImageProps } from '../media-preview'
+import PreviewImage from './PreviewImage'
 import './ip-showcase.css'
 
 const backgrounds = ['#e1d9ec', '#dce4ed', '#e9dce5', '#e0e4df']
@@ -13,7 +13,7 @@ function IPFigure({ item, index, total, active, registerFigure, enterFigure, lea
   useEffect(() => setFailed(false), [item.src])
   const hover = { onPointerEnter: event => enterFigure(index, event), onPointerLeave: event => leaveFigure(index, event) }
   return <div ref={node => { registerFigure(index, node) }} className="ip-figure" data-index={index} data-active={active || undefined} aria-hidden={!active || undefined} style={initialStyle}>
-    {item.src && !failed ? <img {...previewImageProps(item.src, '(max-width: 700px) 60vw, 440px')} alt={item.alt || item.title} draggable="false" loading="lazy" decoding="async" onError={() => setFailed(true)} {...hover} /> :
+    {item.src && !failed ? <PreviewImage src={item.src} alt={item.alt || item.title} draggable="false" onError={() => setFailed(true)} {...hover} /> :
       <span className="ip-placeholder" aria-hidden="true" {...hover}><span className="ip-placeholder-label">CHARACTER STUDY</span><strong>IP {String(index + 1).padStart(2, '0')}</strong><span className="ip-placeholder-note">{failed ? '素材暂时无法加载' : 'IP 形象待放入'}<small>透明底 PNG / WebP</small></span></span>}
   </div>
 }
