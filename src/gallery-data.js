@@ -21,9 +21,9 @@ export const gallerySections = [
           'creative-square-02', 'creative-square-03', 'creative-square-08',
           'creative-square-10', 'creative-square-11', 'creative-square-13',
           'creative-square-14', 'creative-square-07', 'creative-square-04',
-          'creative-square-06', 'creative-square-01', 'creative-square-09',
-          'creative-square-17', 'creative-square-16', 'creative-square-12',
-          'creative-square-05', 'creative-square-18', 'creative-square-15',
+          'creative-square-06', 'creative-square-05', 'creative-square-01',
+          'creative-square-09', 'creative-square-17', 'creative-square-16',
+          'creative-square-12', 'creative-square-18', 'creative-square-15',
         ],
       },
       {
