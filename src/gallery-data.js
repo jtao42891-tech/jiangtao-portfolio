@@ -17,16 +17,24 @@ export const gallerySections = [
       {
         id: 'creative-square', title: '方图创意', label: 'SELECTED SQUARES', layout: 'featured-creative',
         items: slots('creative-square', '创意方图', 18, 'image', '1:1'),
-        featuredIds: ['creative-square-01', 'creative-square-04', 'creative-square-15', 'creative-square-02', 'creative-square-12', 'creative-square-06'],
+        featuredIds: [
+          'creative-square-01', 'creative-square-09', 'creative-square-17',
+          'creative-square-03', 'creative-square-08', 'creative-square-11',
+          'creative-square-02', 'creative-square-10', 'creative-square-14',
+          'creative-square-04', 'creative-square-07', 'creative-square-05',
+          'creative-square-16', 'creative-square-12', 'creative-square-06',
+          'creative-square-13', 'creative-square-18', 'creative-square-15',
+        ],
       },
       {
         id: 'creative-long', title: '竖版创意', label: 'SELECTED POSTERS', layout: 'featured-creative',
         frameRatio: '3:4', // 试用统一外框；删除此项即可恢复逐张原比例排版。
         items: slots('creative-long', '竖版海报', 12, 'image', '3:4'),
         featuredIds: [
-          'creative-long-09', 'creative-long-08', 'creative-long-04', 'creative-long-12',
-          'creative-long-02', 'creative-long-03', 'creative-long-05', 'creative-long-06',
-          'creative-long-07', 'creative-long-10', 'creative-long-11', 'creative-long-01',
+          'creative-long-02', 'creative-long-03', 'creative-long-05',
+          'creative-long-04', 'creative-long-06', 'creative-long-07',
+          'creative-long-10', 'creative-long-08', 'creative-long-01',
+          'creative-long-11', 'creative-long-09', 'creative-long-12',
         ],
       },
     ],
