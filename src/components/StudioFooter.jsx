@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { profile } from '../content'
-import { timeForAngle } from '../gaze-utils'
+import { createDesktopGazeTracker, DESKTOP_GAZE_SRC, loadDesktopGazeSource } from '../desktop-gaze'
 import { createMobileGazeAnimation } from '../mobile-gaze-playback'
 import RevealText from './RevealText'
 import './studio-footer.css'
@@ -11,21 +11,17 @@ export function GazeBackground({ className = 'studio-background', priority = fal
   const posterRef = useRef(null)
   useEffect(() => {
     const video = videoRef.current
-    let frame = 0
     let pointer = null
     let disposed = false
     let visible = false
-    let targetAngle = null
-    let displayAngle = null
-    let appliedTime = Number.NaN
-    let candidateTime = Number.NaN
-    let candidateTicks = 0
-    let lastFrameAt = 0
     // A narrow desktop window still has a mouse and must keep gaze tracking.
     const mobile = window.matchMedia('(hover: none) and (pointer: coarse)')
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
     const connection = navigator.connection
     let requestedSource = ''
+    let loadingDesktop = false
+    let desktopAttempts = 0
+    let retryTimer = 0
     let mobilePlayback = null
     // Keep an image visible until an actual decoded/playing frame is available.
     const showVideo = () => {
@@ -36,30 +32,9 @@ export function GazeBackground({ className = 'studio-background', priority = fal
       delete video.dataset.frameReady
       containerRef.current?.removeAttribute('data-frame-ready')
     }
-    const seek = timestamp => {
-      frame = 0
-      if (disposed || !visible || document.hidden || mobile.matches || video.readyState < 2 || !Number.isFinite(video.duration) || targetAngle === null) {
-        lastFrameAt = 0
-        return
-      }
-      if (displayAngle === null) displayAngle = targetAngle
-      const elapsed = lastFrameAt ? Math.min(64, Math.max(8, timestamp - lastFrameAt)) : 16
-      lastFrameAt = timestamp
-      const angleDelta = Math.atan2(Math.sin(targetAngle - displayAngle), Math.cos(targetAngle - displayAngle))
-      const smoothing = 1 - Math.exp(-elapsed / 85)
-      displayAngle += angleDelta * smoothing
-      const desiredTime = Math.max(0, Math.min(timeForAngle(displayAngle), video.duration - 1 / 24))
-      if (Math.abs(desiredTime - candidateTime) < 1 / 120) candidateTicks += 1
-      else { candidateTime = desiredTime; candidateTicks = 1 }
-      const firstFrame = !Number.isFinite(appliedTime)
-      const frameChanged = firstFrame || Math.abs(desiredTime - appliedTime) > 1 / 60
-      if (!video.seeking && frameChanged && (firstFrame || candidateTicks >= 2)) {
-        video.currentTime = desiredTime
-        appliedTime = desiredTime
-      }
-      if (Math.abs(angleDelta) > .002 || video.seeking || Math.abs(desiredTime - appliedTime) > 1 / 60) schedule()
-    }
-    const schedule = () => { if (!disposed && !frame) frame = requestAnimationFrame(seek) }
+    const tracker = createDesktopGazeTracker({ video, onFrame: showVideo,
+      canTrack: () => !disposed && visible && !document.hidden && !mobile.matches && !reducedMotion.matches && !connection?.saveData,
+    })
     const updateTarget = () => {
       if (disposed || !visible || mobile.matches || !pointer) return
       const rect = video.getBoundingClientRect()
@@ -68,14 +43,16 @@ export function GazeBackground({ className = 'studio-background', priority = fal
       const eyeY = rect.top + rect.height / 2 + (418 - 540) * scale
       const dx = pointer.x - eyeX
       const dy = pointer.y - eyeY
-      if (Math.hypot(dx, dy) > 12) { targetAngle = Math.atan2(dy, dx); schedule() }
+      if (Math.hypot(dx, dy) > 12) tracker.setAngle(Math.atan2(dy, dx))
     }
     const move = event => { pointer = { x: event.clientX, y: event.clientY }; updateTarget() }
     const ready = () => {
       if (disposed) return
       if (mobile.matches) {
+        tracker.stop()
         if (!mobilePlayback) {
           requestedSource = ''
+          desktopAttempts = 0
           video.pause()
           if (video.getAttribute('src')) {
             video.removeAttribute('src')
@@ -90,47 +67,63 @@ export function GazeBackground({ className = 'studio-background', priority = fal
       }
       mobilePlayback?.dispose()
       mobilePlayback = null
-      if (!visible || document.hidden) { video.pause(); return }
+      if (!visible || document.hidden) { tracker.stop(); video.pause(); return }
       if (reducedMotion.matches || connection?.saveData) {
+        tracker.stop()
         video.pause()
         showPoster()
         return
       }
-      const source = mobile.matches ? '/footer-mobile.mp4' : '/footer-desktop.mp4'
-      if (source !== requestedSource) {
-        requestedSource = source
+      if (!requestedSource && !loadingDesktop && desktopAttempts < 2) {
+        loadingDesktop = true
+        desktopAttempts++
         showPoster()
-        video.muted = true
-        video.defaultMuted = true
-        video.playsInline = true
-        // Desktop scrubbing never calls play(), so preload=none can otherwise
-        // leave it waiting on the poster instead of preparing seekable frames.
-        video.preload = 'auto'
-        appliedTime = Number.NaN
-        video.src = source
-        video.load()
+        loadDesktopGazeSource().then(source => {
+          if (disposed) return
+          loadingDesktop = false
+          if (mobile.matches) { desktopAttempts = 0; return }
+          requestedSource = source
+          tracker.reset()
+          video.muted = true
+          video.defaultMuted = true
+          video.playsInline = true
+          video.preload = 'auto'
+          video.src = source
+          video.load()
+        }).catch(() => {
+          if (disposed) return
+          loadingDesktop = false
+          showPoster()
+          if (desktopAttempts < 2) retryTimer = window.setTimeout(ready, 1500)
+        })
       }
-      video.loop = mobile.matches
-      if (mobile.matches) {
-        video.play().catch(() => { if (!disposed && video.paused) showPoster() })
-      } else {
-        video.pause()
-        if (video.readyState >= 2) showVideo()
-        updateTarget(); schedule()
-      }
+      video.pause()
+      updateTarget(); tracker.wake()
     }
     const observer = typeof IntersectionObserver === 'undefined' ? null : new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; ready() }, { rootMargin: mobile.matches ? '0px' : '200px 0px', threshold: 0 })
     observer?.observe(containerRef.current)
     if (!observer) { visible = true; ready() }
-    video.addEventListener('seeked', schedule)
     video.addEventListener('loadeddata', ready)
     video.addEventListener('canplay', ready)
     const desktopPlaying = () => { if (!mobile.matches) showVideo() }
     video.addEventListener('playing', desktopPlaying)
-    video.addEventListener('error', showPoster)
+    const failed = () => {
+      showPoster()
+      // Some embedded desktop browsers reject blob media. Keep the same small
+      // MP4 as a direct-URL fallback; never fall back to the old 5 MB download.
+      if (!disposed && !mobile.matches && requestedSource.startsWith('blob:')) {
+        requestedSource = DESKTOP_GAZE_SRC
+        tracker.reset()
+        video.src = requestedSource
+        video.load()
+      }
+    }
+    const online = () => { desktopAttempts = 0; ready() }
+    video.addEventListener('error', failed)
     mobile.addEventListener('change', ready)
     reducedMotion.addEventListener('change', ready)
     window.addEventListener('pointermove', move, { passive: true })
+    window.addEventListener('online', online)
     window.addEventListener('resize', updateTarget)
     window.addEventListener('scroll', updateTarget, { passive: true })
     document.addEventListener('visibilitychange', ready)
@@ -138,18 +131,19 @@ export function GazeBackground({ className = 'studio-background', priority = fal
     if (video.readyState >= 2) ready()
     return () => {
       disposed = true
-      cancelAnimationFrame(frame)
+      tracker.dispose()
+      window.clearTimeout(retryTimer)
       observer?.disconnect()
       mobilePlayback?.dispose()
       video.pause()
-      video.removeEventListener('seeked', schedule)
       video.removeEventListener('loadeddata', ready)
       video.removeEventListener('canplay', ready)
       video.removeEventListener('playing', desktopPlaying)
-      video.removeEventListener('error', showPoster)
+      video.removeEventListener('error', failed)
       mobile.removeEventListener('change', ready)
       reducedMotion.removeEventListener('change', ready)
       window.removeEventListener('pointermove', move)
+      window.removeEventListener('online', online)
       window.removeEventListener('resize', updateTarget)
       window.removeEventListener('scroll', updateTarget)
       document.removeEventListener('visibilitychange', ready)

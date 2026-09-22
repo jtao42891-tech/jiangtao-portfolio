@@ -20,9 +20,11 @@ export default function PreviewImage({ src, sizes, ...props }) {
   }, [src])
 
   const requested = request?.src === src
+  // IntersectionObserver already gates requests. Once near the viewport, start
+  // immediately instead of waiting for a second, browser-native lazy threshold.
   return <img {...props} ref={imageRef} width={preview.width} height={preview.height}
     src={requested ? preview.src : undefined} srcSet={requested ? preview.srcSet : undefined}
     sizes={requested && !request.mobile ? `${request.width}px` : undefined}
     fetchPriority={request?.mobile ? request.priority : props.fetchPriority}
-    loading={request?.mobile ? 'eager' : 'lazy'} decoding="async" />
+    loading="eager" decoding="async" />
 }

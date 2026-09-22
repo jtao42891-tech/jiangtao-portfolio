@@ -25,5 +25,8 @@
 /footer-desktop.mp4
   Cache-Control: public, max-age=3600
 
+/footer-desktop-dec0e3dc.mp4
+  Cache-Control: public, max-age=31536000, immutable
+
 /footer-poster.jpg
   Cache-Control: public, max-age=3600
