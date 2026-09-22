@@ -1,6 +1,6 @@
 import { timeForAngle } from './gaze-utils.js'
 
-export const DESKTOP_GAZE_SRC = '/footer-desktop-dec0e3dc.mp4'
+export const DESKTOP_GAZE_SRC = '/footer-desktop-1f500a82.mp4'
 
 // One complete, small download for both puppets. Seeking a local blob never
 // waits for another range request to the CDN, and failed downloads can retry.

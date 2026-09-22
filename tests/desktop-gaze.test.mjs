@@ -132,8 +132,15 @@ test('offscreen/hidden tracking pauses, and cleanup cannot be revived by decoder
   assert.equal(r.queue.size, 0)
 })
 
-test('desktop payload is under 800 KB and all gaze sample times fit in the trimmed video', async () => {
-  assert.ok(statSync(new URL('../public' + DESKTOP_GAZE_SRC, import.meta.url)).size < 800000)
+test('desktop payload retains 1080p detail within 2.2 MB and all gaze sample times fit', async () => {
+  const asset = new URL('../public' + DESKTOP_GAZE_SRC, import.meta.url)
+  assert.ok(statSync(asset).size < 2200000)
+  // Width/height are fixed fields in an ISO BMFF VisualSampleEntry.
+  const video = readFileSync(asset)
+  const sampleEntry = video.indexOf(Buffer.from('avc1'), video.indexOf(Buffer.from('stsd')))
+  assert.ok(sampleEntry > 0, 'H.264 visual sample entry must exist')
+  assert.equal(video.readUInt16BE(sampleEntry + 28), 1920)
+  assert.equal(video.readUInt16BE(sampleEntry + 30), 1080)
   assert.ok(frames.every(([, time]) => time + 1 / 240 < 3.25 - 1 / 24))
   const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8')
   assert.ok(html.includes(`href="${DESKTOP_GAZE_SRC}" as="fetch"`))
